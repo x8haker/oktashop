@@ -11,7 +11,7 @@ export const storeConfig = {
     /** URL Cloudflare Worker вида https://<name>.workers.dev/order — заказы
      *  уходят в Telegram автоматически. Пустая строка = Worker выключен,
      *  работает запасной режим «подготовить заказ + открыть чат». */
-    workerUrl: "",
+    workerUrl: "https://oktashop-order.x8-haking.workers.dev/order",
   },
 
   contacts: {
