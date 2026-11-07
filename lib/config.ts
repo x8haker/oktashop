@@ -11,11 +11,11 @@ export const storeConfig = {
   },
 
   contacts: {
-    phone: "",
+    phone: "+992 87 211 8008",
     email: "hello@oktashop.tj",
     /** Пустая строка = соцсеть не настроена, ссылка не рендерится (нет мёртвых ссылок).
      *  Формат — полный URL: https://instagram.com/<user> */
-    instagram: "",
+    instagram: "https://instagram.com/oktash0p",
     /** Полный URL вида https://t.me/<username> — используется как href ссылки. */
     telegram: "",
     address: "Dushanbe, Tajikistan",
