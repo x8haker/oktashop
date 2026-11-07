@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 
 import ProductCard from "@/components/ProductCard";
@@ -29,14 +29,30 @@ type Sort = "new" | "price-asc" | "price-desc" | "name";
 
 function Catalog() {
   const params = useSearchParams();
-  const [cat, setCat] = useState<Category | "ALL">(
-    (params.get("category") as Category) || "ALL"
-  );
-  const [onlyNew, setOnlyNew] = useState(params.get("new") === "1");
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Категория и «только new» живут в URL: ссылки вида /shop?category=JACKETS
+  // работают при уже открытой странице, кнопка «назад» восстанавливает
+  // фильтры, а reset() чистит query. Невалидное значение → ALL.
+  const rawCat = params.get("category");
+  const cat: Category | "ALL" =
+    rawCat && CATS.includes(rawCat as Category) ? (rawCat as Category) : "ALL";
+  const onlyNew = params.get("new") === "1";
+
   const [size, setSize] = useState<string>("ALL");
   const [sort, setSort] = useState<Sort>("new");
   const [q, setQ] = useState("");
   const [quick, setQuick] = useState<Product | null>(null);
+
+  /** Патчит query-параметры фильтров, не трогая остальные. */
+  const setParam = (key: string, value: string | null) => {
+    const sp = new URLSearchParams(params.toString());
+    if (value === null) sp.delete(key);
+    else sp.set(key, value);
+    const qs = sp.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
 
   const list = useMemo(() => {
     let l = products.filter((p) => {
@@ -57,12 +73,16 @@ function Catalog() {
     return l;
   }, [cat, onlyNew, size, sort, q]);
 
+  const setCat = (c: Category | "ALL") =>
+    setParam("category", c === "ALL" ? null : c);
+  const setOnlyNew = (v: boolean) => setParam("new", v ? "1" : null);
+
   const reset = () => {
-    setCat("ALL");
-    setOnlyNew(false);
     setSize("ALL");
     setSort("new");
     setQ("");
+    // Чистим query целиком — иначе после сброса URL держит ?new=1/category.
+    router.replace(pathname, { scroll: false });
   };
 
   return (
@@ -78,13 +98,13 @@ function Catalog() {
           THE SHOP
         </h1>
         <p className="mt-4 max-w-md text-sm text-concrete">
-          {products.length} позиций с реальными фото. Размеры и цены уточняются —
-          напишите нам, подтвердим наличие.
+          {products.length} позиций с реальными фото товаров. Наличие и размеры
+          подтверждаем при заказе.
         </p>
       </header>
 
       <Marquee
-        text="DROP 001 — FALL / WEAR YOUR ATTITUDE — NO RULES. NO UNIFORM. — STREET CULTURE NEVER DIES —"
+        text="DROP 001 — FALL / WINTER — WEAR YOUR ATTITUDE — NO RULES. NO UNIFORM. — STREET CULTURE NEVER DIES —"
         className="mb-10"
       />
 
@@ -111,7 +131,7 @@ function Catalog() {
               ))}
 
               <button
-                onClick={() => setOnlyNew((v) => !v)}
+                onClick={() => setOnlyNew(!onlyNew)}
                 className={`border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors ${
                   onlyNew
                     ? "border-lime bg-lime text-void"

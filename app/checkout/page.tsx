@@ -16,16 +16,14 @@ interface Form {
 }
 
 export default function CheckoutPage() {
-  const { items, subtotal, clear } = useCart();
+  const { items, subtotal, clear, hydrated } = useCart();
   const [f, setF] = useState<Form>({ name: "", phone: "", city: "Душанбе", details: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
   const [status, setStatus] = useState<"idle" | "prepared" | "copied">("idle");
   const [orderText, setOrderText] = useState("");
 
   const tgConfigured = Boolean(storeConfig.telegram.username);
-  const mailtoFallback = `mailto:${storeConfig.contacts.email}?subject=${encodeURIComponent(
-    "Заказ OKTASHOP"
-  )}&body=${encodeURIComponent(orderText || "Здравствуйте! Хочу оформить заказ.")}`;
+  const tgHref = storeConfig.contacts.telegram;
 
   const validate = () => {
     const e: Partial<Record<keyof Form, string>> = {};
@@ -42,7 +40,6 @@ export default function CheckoutPage() {
     setF((prev) => ({ ...prev, [key]: value }));
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
   };
-
   const buildOrder = () => {
     const lines = items.map(
       (i, n) =>
@@ -59,7 +56,7 @@ export default function CheckoutPage() {
       ``,
       ...lines,
       ``,
-      `ИТОГО: ${formatPrice(subtotal)} (+ доставка)`,
+      `ИТОГО за товары: ${formatPrice(subtotal)}; ${storeConfig.delivery.dushanbe}`,
     ]
       .filter(Boolean)
       .join("\n");
@@ -74,8 +71,10 @@ export default function CheckoutPage() {
     setOrderText(text);
 
     if (tgConfigured) {
-      const url = `https://t.me/${storeConfig.telegram.username}?text=${encodeURIComponent(text)}`;
-      window.open(url, "_blank", "noopener,noreferrer");
+      // Открываем чат магазина: параметр ?text для обычного профиля/бота
+      // не гарантирует подстановку, поэтому текст заказа остаётся на экране
+      // и кнопка «Скопировать» рядом.
+      window.open(`https://t.me/${storeConfig.telegram.username}`, "_blank", "noopener,noreferrer");
     }
     setStatus("prepared");
   };
@@ -84,10 +83,25 @@ export default function CheckoutPage() {
     try {
       await navigator.clipboard.writeText(orderText);
       setStatus("copied");
+      // Кнопка не должна навсегда оставаться в состоянии «Скопировано».
+      setTimeout(() => setStatus((s) => (s === "copied" ? "prepared" : s)), 2000);
     } catch {
       /* clipboard недоступен — текст виден на экране */
     }
   };
+
+  // До гидратации состав корзины неизвестен — иначе у покупателя с товарами
+  // в localStorage мелькает экран «NO ITEMS.».
+  if (!hydrated) {
+    return (
+      <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
+        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
+          STEP 01 / DELIVERY DETAILS
+        </p>
+        <div className="mt-4 h-[15vw] w-full max-w-[900px] animate-pulse bg-asphalt md:h-[9vw]" />
+      </div>
+    );
+  }
 
   if (items.length === 0 && status === "idle") {
     return (
@@ -126,7 +140,7 @@ export default function CheckoutPage() {
               </span>
               <input
                 value={f.name}
-                onChange={(e) => setF({ ...f, name: e.target.value })}
+                onChange={(e) => update("name", e.target.value)}
                 placeholder="Ваше имя"
                 className={`w-full border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-lime ${
                   errors.name ? "border-blood" : "border-dirty/25"
@@ -143,7 +157,7 @@ export default function CheckoutPage() {
               </span>
               <input
                 value={f.phone}
-                onChange={(e) => setF({ ...f, phone: e.target.value })}
+                onChange={(e) => update("phone", e.target.value)}
                 inputMode="tel"
                 placeholder="+992 ..."
                 className={`w-full border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-lime ${
@@ -161,7 +175,7 @@ export default function CheckoutPage() {
               </span>
               <input
                 value={f.city}
-                onChange={(e) => setF({ ...f, city: e.target.value })}
+                onChange={(e) => update("city", e.target.value)}
                 placeholder="Душанбе"
                 className={`w-full border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-lime ${
                   errors.city ? "border-blood" : "border-dirty/25"
@@ -178,7 +192,7 @@ export default function CheckoutPage() {
               </span>
               <input
                 value={f.details}
-                onChange={(e) => setF({ ...f, details: e.target.value })}
+                onChange={(e) => update("details", e.target.value)}
                 placeholder="Район, адрес, удобное время"
                 className="w-full border border-dirty/25 bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-lime"
               />
@@ -192,18 +206,13 @@ export default function CheckoutPage() {
             <ol className="mt-3 space-y-2 text-sm text-dirty/70">
               <li>1. Заполните форму — нажмите «ОФОРМИТЬ ЗАКАЗ».</li>
               <li>
-                2. Откроется Telegram с готовым текстом заказа — отправьте его{" "}
-                {tgConfigured ? "нам" : "менеджеру магазина"}.
+                2. {tgConfigured
+                  ? "Откроется Telegram магазина — отправьте нам текст заказа."
+                  : "Нажмите «Скопировать заказ» и передайте его магазину в Telegram."}
               </li>
               <li>3. Мы подтвердим наличие, размеры и доставку в ответном сообщении.</li>
               <li>4. Оплата при получении. Онлайн-оплаты на сайте нет.</li>
             </ol>
-            {!tgConfigured && (
-              <p className="mt-3 border-l-2 border-blood pl-3 font-mono text-[10px] uppercase tracking-widest text-blood">
-                Telegram-интеграция не настроена — укажите username магазина в
-                lib/config.ts
-              </p>
-            )}
           </div>
 
           <button
@@ -241,6 +250,9 @@ export default function CheckoutPage() {
               {formatPrice(subtotal)}
             </span>
           </div>
+          <p className="mt-2 font-mono text-[10px] uppercase tracking-widest text-concrete">
+            Доставка: {storeConfig.delivery.dushanbe}
+          </p>
 
           <Link
             href="/cart"
@@ -259,8 +271,8 @@ export default function CheckoutPage() {
           </p>
           <p className="mt-2 text-sm text-dirty/70">
             {tgConfigured
-              ? "Мы открыли Telegram — нажмите «Отправить» в появившемся окне, чтобы заказ ушёл менеджеру."
-              : "Интеграция с Telegram пока не подключена, поэтому заказ НЕ отправлен автоматически. Скопируйте текст ниже и передайте его менеджеру в любом удобном канале."}
+              ? "Мы открыли Telegram магазина — отправьте текст заказа из поля ниже."
+              : "Скопируйте текст заказа ниже и передайте его менеджеру в любом удобном канале."}
           </p>
 
           <pre className="mt-4 max-h-64 overflow-auto whitespace-pre-wrap border border-dirty/15 bg-void p-4 font-mono text-xs leading-relaxed text-dirty/80">
@@ -276,14 +288,16 @@ export default function CheckoutPage() {
               {status === "copied" ? "Скопировано" : "Скопировать заказ"}
             </button>
 
-            <a
-              href={storeConfig.contacts.telegram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-lime px-5 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-void transition-colors hover:bg-dirty"
-            >
-              Открыть Telegram магазина
-            </a>
+            {tgHref && (
+              <a
+                href={tgHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-lime px-5 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-void transition-colors hover:bg-dirty"
+              >
+                Открыть Telegram магазина
+              </a>
+            )}
 
             <button
               onClick={() => {

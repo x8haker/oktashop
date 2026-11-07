@@ -34,6 +34,11 @@ export default function SmoothScroll() {
       if (!el) return;
       e.preventDefault();
       lenis.scrollTo(el as HTMLElement, { offset: -80 });
+      // Skip-link (#main) обязан передавать фокус — иначе a11y-регрессия:
+      // клавиатурный пользователь остаётся в начале страницы.
+      if (el.id === "main" || el.hasAttribute("tabindex")) {
+        (el as HTMLElement).focus({ preventScroll: true });
+      }
     };
     document.addEventListener("click", onClick);
 

@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { formatPrice, type Product } from "@/lib/products";
 import { useCart } from "@/lib/cart";
+import { popBodyLock, pushBodyLock } from "@/lib/body-lock";
 
 /** Модальное окно быстрого просмотра товара. */
 export default function QuickView({
@@ -24,15 +25,13 @@ export default function QuickView({
     if (product) setSize(product.sizes[0] ?? "");
   }, [product]);
 
-  // Блокируем прокрутку страницы под модалкой.
+  // Блокируем прокрутку страницы под модалкой (общий счётчик с Navbar:
+  // закрытие одного не должно снимать блокировку другого).
   useEffect(() => {
     if (!product) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    pushBodyLock();
     closeRef.current?.focus();
-    return () => {
-      document.body.style.overflow = prev;
-    };
+    return popBodyLock;
   }, [product]);
 
   // Закрытие по Escape.
@@ -84,6 +83,8 @@ export default function QuickView({
               <img
                 src={product.images[0]}
                 alt={product.name}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover"
               />
             </div>

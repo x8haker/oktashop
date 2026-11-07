@@ -3,10 +3,12 @@ import Link from "next/link";
 import { ArrowUpRight, Instagram, Mail, MapPin, Phone, Send } from "lucide-react";
 
 import { storeConfig } from "@/lib/config";
+import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
   title: "Контакты",
   description: "Связаться с OKTASHOP®: почта, адрес. Душанбе.",
+  alternates: { canonical: asset("/contact/") },
 };
 
 export default function ContactPage() {
@@ -17,7 +19,14 @@ export default function ContactPage() {
   const rows = [
     // Пустые значения (соцсеть не настроена) не рендерятся — нет мёртвых ссылок.
     tgHandle && { icon: Send, label: "TELEGRAM", value: tgHandle, href: c.telegram },
-    c.instagram && { icon: Instagram, label: "INSTAGRAM", value: "oktashop", href: c.instagram },
+    // storeConfig — as const, поэтому строка типизируется как ""; приводим к string.
+    (c.instagram as string) && {
+      icon: Instagram,
+      label: "INSTAGRAM",
+      // Показываем ник, а не полный URL: config хранит ссылку вида https://instagram.com/<user>
+      value: (c.instagram as string).replace(/^https?:\/\/(www\.)?instagram\.com\//, "@"),
+      href: c.instagram,
+    },
     { icon: Mail, label: "EMAIL", value: c.email, href: `mailto:${c.email}` },
     { icon: MapPin, label: "ADDRESS", value: c.address, href: undefined },
     ...(c.phone
@@ -80,8 +89,9 @@ export default function ContactPage() {
             <span className="text-lime">.</span>
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-dirty/70">
-            Быстрее всего отвечаем в Telegram: напишите, какой товар и размер вас
-            интересует — подтвердим наличие и доставку.
+            {c.telegram
+              ? "Быстрее всего отвечаем в Telegram: напишите, какой товар и размер вас интересует — подтвердим наличие и доставку."
+              : "Напишите нам, какой товар и размер вас интересует — подтвердим наличие и доставку."}
           </p>
 
           <div className="mt-6 flex flex-col gap-3">
@@ -121,7 +131,7 @@ export default function ContactPage() {
           </div>
 
           <p className="mt-6 border-l-2 border-lime pl-3 font-mono text-[10px] uppercase leading-relaxed tracking-widest text-concrete">
-            Контакты задаются в одном месте: lib/config.ts
+            Отвечаем в течение дня, Душанбе
           </p>
         </div>
       </div>

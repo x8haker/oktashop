@@ -3,10 +3,12 @@ import Link from "next/link";
 import { ArrowRight, MapPin, MessageCircle, Truck } from "lucide-react";
 
 import { storeConfig } from "@/lib/config";
+import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
   title: "Доставка",
   description: "Доставка OKTASHOP®: бесплатно по Душанбе, в другие города — такси.",
+  alternates: { canonical: asset("/delivery/") },
 };
 
 export default function DeliveryPage() {

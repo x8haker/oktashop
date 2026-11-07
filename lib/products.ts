@@ -62,7 +62,7 @@ export const products: Product[] = [
     price: 950,
     sizes: ["S", "M", "L", "XL"],
     images: [1, 2, 3, 4, 5, 6].map((n) => pimg("preppy-tie-sweatshirt", n)),
-    isNew: true,
+    isNew: false,
     sku: "OKT-SW-001",
     description:
       "Необычный свитшот в стиле университетской классики: воротник, галстук и винтажные детали в одной модели. V-образный вырез, декоративный воротник рубашки и полосатый галстук.",
@@ -75,7 +75,7 @@ export const products: Product[] = [
     price: 890,
     sizes: ["M", "L", "XL"],
     images: [1, 2].map((n) => pimg("spider-graphic-hoodie", n)),
-    isNew: true,
+    isNew: false,
     sku: "OKT-HD-002",
     description:
       "Свободная модель с выразительной графикой паука — для тех, кто любит тёмный уличный стиль. Чёрный и серый верх.",
@@ -91,7 +91,7 @@ export const products: Product[] = [
     isNew: true,
     sku: "OKT-ST-001",
     description:
-      "Комплект: худи с графикой паука + брюки с повторяющимся принтом. Серый верх, чёрный низ. Продаётся комплектом — уточнить наличие по частям.",
+      "Комплект: худи с графикой паука + брюки с повторяющимся принтом. Серый верх, чёрный низ. Продаётся комплектом.",
   },
   {
     id: "p05",
@@ -116,9 +116,9 @@ export const products: Product[] = [
     images: [
       pimg("baggy-jeans-grey", 1),
       pimg("baggy-jeans-grey", 2),
-      pimg("baggy-jeans-grey", 3, "png"),
+      pimg("baggy-jeans-grey", 3),
     ],
-    isNew: true,
+    isNew: false,
     sku: "OKT-JN-001",
     description:
       "Свободные джинсы в уличном стиле с расслабленной посадкой: широкие штанины, серое выцветшее покрытие, свободный крой. Плотный мягкий деним, качественная фурнитура.",
@@ -147,7 +147,7 @@ export const products: Product[] = [
     isNew: true,
     sku: "OKT-JK-001",
     description:
-      "Тёмная куртка-бомбер с контрастными красными вставками и вышивкой паука на груди. Молния по центру, резинка по низу и на рукавах. Состав и утеплитель — уточнить.",
+      "Тёмная куртка-бомбер с контрастными красными вставками и вышивкой паука на груди. Молния по центру, резинка по низу и на рукавах.",
   },
   {
     id: "p09",
@@ -160,7 +160,7 @@ export const products: Product[] = [
     isNew: false,
     sku: "OKT-SH-001",
     description:
-      "Кеды в серо-белой расцветке с контрастными деталями, casual/skate-стиль. Таблицу размеров (длина стельки в см) запросить у поставщика.",
+      "Кеды в серо-белой расцветке с контрастными деталями, casual/skate-стиль.",
   },
   {
     id: "p10",
@@ -173,7 +173,7 @@ export const products: Product[] = [
     isNew: true,
     sku: "OKT-SH-002",
     description:
-      "Кеды чёрного цвета с бирюзовым контрастом — заметная пара в тёмных образах. Материал верха и подошвы, размерная сетка — уточнить у поставщика.",
+      "Кеды чёрного цвета с бирюзовым контрастом — заметная пара в тёмных образах.",
   },
   {
     id: "p11",
@@ -186,7 +186,7 @@ export const products: Product[] = [
     isNew: false,
     sku: "OKT-AC-001",
     description:
-      "Шапка-бини с чёрной готической графикой на отвороте. Универсальный размер, состав и способ нанесения изображения — уточнить.",
+      "Шапка-бини с чёрной готической графикой на отвороте. Универсальный размер.",
   },
   {
     id: "p12",
@@ -199,7 +199,7 @@ export const products: Product[] = [
     isNew: false,
     sku: "OKT-SW-002",
     description:
-      "Тёмно-синий свитшот на молнии с нашивками (европейская/американская символика), длина до бёдер, свободный крой. Материал и состав — уточнить.",
+      "Тёмно-синий свитшот на молнии с нашивками (европейская/американская символика), длина до бёдер, свободный крой.",
   },
   {
     id: "p13",
@@ -209,21 +209,28 @@ export const products: Product[] = [
     price: 990,
     sizes: ["M", "L", "XL"],
     images: [pimg("spider-zip-hoodie", 1)],
-    isNew: true,
+    isNew: false,
     sku: "OKT-HD-004",
     description:
       "Худи на молнии в бордово-белой расцветке с острой звёздной графикой: панели на рукавах, принт на капюшоне и груди. Свободный силуэт.",
   },
 ];
 
-export const getCategory = (c: Category) => products.filter((p) => p.category === c);
-
 export const getBySlug = (slug: string) => products.find((p) => p.slug === slug);
 
 export const getRelated = (p: Product, n = 4) =>
   products.filter((x) => x.id !== p.id && x.category === p.category).slice(0, n);
 
-export const allSizes = Array.from(new Set(products.flatMap((p) => p.sizes))).sort();
+/** Размеры для фильтра: S/M/L/XL идут первыми, потом числа (30 < 32 < 40).
+ *  Дефолтная сортировка строк давала «30,32,…,L,M,S,XL». */
+const sizeRank = (s: string) => {
+  const order = ["S", "M", "L", "XL", "XXL"];
+  const i = order.indexOf(s);
+  return i >= 0 ? i : order.length;
+};
+export const allSizes = Array.from(new Set(products.flatMap((p) => p.sizes))).sort(
+  (a, b) => sizeRank(a) - sizeRank(b) || (parseInt(a, 10) || 0) - (parseInt(b, 10) || 0) || a.localeCompare(b)
+);
 
 export const formatPrice = (v: number) =>
   `${v.toLocaleString("ru-RU")} TJS`;

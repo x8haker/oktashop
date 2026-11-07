@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ArrowRight, Truck, MapPin, MessageCircle } from "lucide-react";
 
 import Marquee from "@/components/Marquee";
@@ -9,17 +10,22 @@ import { categories, products } from "@/lib/products";
 import { storeConfig } from "@/lib/config";
 import { asset } from "@/lib/asset";
 
+export const metadata: Metadata = {
+  alternates: { canonical: asset("/") },
+};
+
 const LOOKBOOK = [
   { src: asset("/lookbook/01.jpg"), cap: "LOOK 01 / NEW YORK" },
   { src: asset("/lookbook/03.jpg"), cap: "LOOK 02 / STREET LAYERS" },
   { src: asset("/lookbook/05.jpg"), cap: "LOOK 03 / MIRROR FIT" },
   { src: asset("/lookbook/06.jpg"), cap: "LOOK 04 / EARTH TONES" },
-  { src: asset("/lookbook/07.png"), cap: "LOOK 05 / PREPPY CLUB" },
+  { src: asset("/lookbook/07.jpg"), cap: "LOOK 05 / PREPPY CLUB" },
   { src: asset("/lookbook/10.jpg"), cap: "LOOK 06 / WIDE LEG DENIM" },
+  { src: asset("/lookbook/02.jpg"), cap: "LOOK 07 / CITY MOTION" },
+  { src: asset("/lookbook/04.jpg"), cap: "LOOK 08 / MONOCHROME" },
+  { src: asset("/lookbook/08.jpg"), cap: "LOOK 09 / OFF DUTY" },
+  { src: asset("/lookbook/09.jpg"), cap: "LOOK 10 / LATE SHIFT" },
 ];
-
-const img = (id: string, w = 1600) =>
-  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
 
 export default function HomePage() {
   return (
@@ -29,11 +35,15 @@ export default function HomePage() {
         {/* фоновое фото */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 overflow-hidden">
+            {/* Реальное фото магазина вместо стокового Unsplash (style.md запрещает
+                дешёвые стоковые фото); loading eager — это hero первого экрана. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={img("photo-1529139574466-a303027c1d8b", 2000)}
+              src={asset("/lookbook/09.jpg")}
               alt="Streetwear editorial"
               data-parallax="0.25"
+              loading="eager"
+              decoding="async"
               className="h-[120%] w-full object-cover object-center opacity-55 grayscale"
             />
           </div>

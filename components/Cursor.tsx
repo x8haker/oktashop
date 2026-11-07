@@ -30,8 +30,18 @@ export default function Cursor() {
     };
 
     const loop = () => {
-      rx += (x - rx) * 0.16;
-      ry += (y - ry) * 0.16;
+      const dx = x - rx;
+      const dy = y - ry;
+      // Кольцо «догнало» курсор — цикл останавливается до следующего движения.
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        rx = x;
+        ry = y;
+        r.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+        raf = 0;
+        return;
+      }
+      rx += dx * 0.16;
+      ry += dy * 0.16;
       r.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
       raf = requestAnimationFrame(loop);
     };
@@ -42,14 +52,19 @@ export default function Cursor() {
       r.classList.toggle("is-hover", Boolean(interactive));
     };
 
+    const kick = () => {
+      if (!raf) raf = requestAnimationFrame(loop);
+    };
+
     window.addEventListener("mousemove", move, { passive: true });
+    window.addEventListener("mousemove", kick, { passive: true });
     window.addEventListener("mouseover", over, { passive: true });
-    raf = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener("mousemove", move);
+      window.removeEventListener("mousemove", kick);
       window.removeEventListener("mouseover", over);
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 

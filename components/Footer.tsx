@@ -52,9 +52,6 @@ export default function Footer() {
                     Написать на почту ↗
                   </a>
                 </li>
-                <li className="text-xs text-concrete">
-                  Соцсети подключаются в lib/config.ts
-                </li>
               </ul>
             )}
           </div>
@@ -79,7 +76,11 @@ export default function Footer() {
 
         <div className="mt-6 flex flex-col items-center gap-3 border-t border-dirty/10 py-8 md:flex-row md:justify-between">
           <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-concrete">
-            © {new Date().getFullYear()} {s.name} — {s.location}
+            {/* suppressHydrationWarning: год на билде и год у клиента могут
+                отличиться на стыке лет — предупреждение гидратации не нужно. */}
+            <span suppressHydrationWarning>
+              © {new Date().getFullYear()} {s.name} — {s.location}
+            </span>
           </p>
           <p className="font-anton text-lg tracking-wide text-lime md:text-2xl">
             SEE YOU OUTSIDE.

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ShoppingBag, Search } from "lucide-react";
 import { useCart } from "@/lib/cart";
+import { popBodyLock, pushBodyLock } from "@/lib/body-lock";
 
 const LINKS = [
   { href: "/shop", label: "SHOP", match: (p: string, q: string) => p === "/shop" && q !== "new=1" },
@@ -34,12 +35,21 @@ export default function Navbar() {
   const search = searchParams.toString();
 
   useEffect(() => {
-    const onScroll = () => {
+    // rAF-троттлинг: без него каждый scroll-событие меняло state
+    // и перерисовывало шапку (включая счётчик корзины) на кадр.
+    let ticking = false;
+    const apply = () => {
       setScrolled(window.scrollY > 40);
       const h = document.documentElement.scrollHeight - window.innerHeight;
       setProgress(h > 0 ? (window.scrollY / h) * 100 : 0);
+      ticking = false;
     };
-    onScroll();
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    };
+    apply();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -49,10 +59,9 @@ export default function Navbar() {
   }, [pathname]);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    if (!open) return;
+    pushBodyLock();
+    return popBodyLock;
   }, [open]);
 
   // Закрытие мобильного меню по Escape.

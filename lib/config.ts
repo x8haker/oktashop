@@ -3,21 +3,20 @@
 export const storeConfig = {
   name: "OKTASHOP®",
   slogan: "NOT MADE TO FIT IN.",
-  currency: "TJS",
   location: "Dushanbe, Tajikistan",
 
   /** Адрес для отправки заказов в Telegram (username без @). Пустая строка = интеграция выключена. */
   telegram: {
     username: "",
-    /** Fallback: публичный бот для конструктора ссылок (заполнить при подключении бота). */
-    botUsername: "",
   },
 
   contacts: {
     phone: "",
     email: "hello@oktashop.tj",
-    /** Пустая строка = соцсеть не настроена, ссылка не рендерится (нет мёртвых ссылок). */
+    /** Пустая строка = соцсеть не настроена, ссылка не рендерится (нет мёртвых ссылок).
+     *  Формат — полный URL: https://instagram.com/<user> */
     instagram: "",
+    /** Полный URL вида https://t.me/<username> — используется как href ссылки. */
     telegram: "",
     address: "Dushanbe, Tajikistan",
   },

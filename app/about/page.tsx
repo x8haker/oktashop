@@ -3,11 +3,13 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import Marquee from "@/components/Marquee";
+import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
   title: "О нас",
   description:
     "OKTASHOP® — независимый streetwear-магазин из Душанбе. NOT MADE TO FIT IN.",
+  alternates: { canonical: asset("/about/") },
 };
 
 const VALUES = [
@@ -40,7 +42,7 @@ export default function AboutPage() {
             <p>
               OKTASHOP® — это независимый магазин стритвира из Душанбе. Мы собираем вещи,
               которые не просят разрешения быть замеченными: широкие силуэты, плотные
-              ткани, нулевые крой и ничего лишнего.
+              ткани, крой в духе нулевых и ничего лишнего.
             </p>
             <p>
               Мы — реселлер и магазин, а не бренд-производитель. Логотип OKTASHOP живёт на

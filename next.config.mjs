@@ -9,11 +9,9 @@ const nextConfig = {
   trailingSlash: true,
   ...(basePath ? { basePath } : {}),
   images: {
+    // next/image не используется (везде сырой <img> с локальными фото) —
+    // оптимизатор на статическом экспорте всё равно отключён.
     unoptimized: true,
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "picsum.photos" },
-    ],
   },
 };
 

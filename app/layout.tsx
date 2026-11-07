@@ -4,11 +4,12 @@ import { Anton, Space_Grotesk, Bebas_Neue, JetBrains_Mono } from "next/font/goog
 import "./globals.css";
 
 import { CartProvider } from "@/lib/cart";
-import { BASE_PATH } from "@/lib/asset";
+import { BASE_PATH, asset } from "@/lib/asset";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollEffects from "@/components/ScrollEffects";
 import Cursor from "@/components/Cursor";
 import Preloader from "@/components/Preloader";
+import PageTransition from "@/components/PageTransition";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -41,7 +42,10 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://oktashop.tj"),
+  // Реальный адрес деплоя (GitHub Pages). Раньше здесь был несуществующий
+  // oktashop.tj — все OG/canonical-URL уходили в никуда.
+  // metadataBase — только origin: абсолютные пути ниже содержат basePath сами.
+  metadataBase: new URL("https://x8haker.github.io"),
   title: {
     default: "OKTASHOP® — NOT MADE TO FIT IN.",
     template: "%s — OKTASHOP®",
@@ -62,16 +66,18 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ru_RU",
     siteName: "OKTASHOP®",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "OKTASHOP®" }],
+    // og.png не существовал (ссылка давала 404) — используем реальное фото лукбука.
+    images: [{ url: asset("/lookbook/01.jpg"), alt: "OKTASHOP®" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "OKTASHOP®",
     description: "NOT MADE TO FIT IN. Independent streetwear store.",
-    images: ["/og.png"],
+    images: [asset("/lookbook/01.jpg")],
   },
-  alternates: { canonical: "/" },
-  icons: { icon: `${BASE_PATH}/icon.svg` },
+  // canonical здесь НЕ задаётся: он применялся бы ко всем страницам сразу
+  // (/about и др. объявляли бы canonical на главную). Свой — в каждой странице.
+  icons: { icon: `${BASE_PATH}/icon.svg`, shortcut: `${BASE_PATH}/favicon.ico` },
   robots: { index: true, follow: true },
 };
 
@@ -102,6 +108,7 @@ export default function RootLayout({
         </a>
 
         <Preloader />
+        <PageTransition />
         <SmoothScroll />
         <ScrollEffects />
         <Cursor />
@@ -112,7 +119,8 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <Navbar />
           </Suspense>
-          <main id="main">{children}</main>
+          {/* tabindex=-1: skip-link передаёт фокус на main (a11y) */}
+          <main id="main" tabIndex={-1}>{children}</main>
           <Footer />
         </CartProvider>
       </body>

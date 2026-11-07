@@ -9,6 +9,10 @@ import {
   useState,
 } from "react";
 import type { Product } from "./products";
+import { getBySlug } from "./products";
+
+/** Максимум штук одной позиции в корзине. */
+const MAX_QTY = 99;
 
 export interface CartItem {
   productId: string;
@@ -74,7 +78,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setItems(sanitizeItems(JSON.parse(raw)));
+      if (raw) {
+        const loaded = sanitizeItems(JSON.parse(raw));
+        // Сверяем цену с актуальным каталогом: в storage она могла «залипнуть»
+        // после изменения прайса. Товар, исчезнувший из каталога, не трогаем —
+        // покупатель уже его выбрал.
+        setItems(
+          loaded.map((i) => {
+            const fresh = getBySlug(i.slug);
+            return fresh && fresh.price !== i.price
+              ? { ...i, price: fresh.price, name: fresh.name }
+              : i;
+          })
+        );
+      }
     } catch {
       /* ignore corrupted cart */
     }
@@ -97,7 +114,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       );
       if (idx >= 0) {
         const next = [...prev];
-        next[idx] = { ...next[idx], qty: next[idx].qty + qty };
+        // Лимит количества: без него «+» на странице товара копил 500 шт.
+        next[idx] = {
+          ...next[idx],
+          qty: Math.min(MAX_QTY, next[idx].qty + Math.max(1, Math.floor(qty))),
+        };
         return next;
       }
       return [
@@ -109,7 +130,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           price: product.price,
           size,
           image: product.images[0],
-          qty,
+          qty: Math.min(MAX_QTY, Math.max(1, Math.floor(qty))),
         },
       ];
     });
@@ -127,7 +148,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         prev
           .map((i) =>
             i.productId === productId && i.size === size
-              ? { ...i, qty: Math.min(99, Math.floor(qty)) }
+              ? { ...i, qty: Math.min(MAX_QTY, Math.floor(qty)) }
               : i
           )
           // Кнопка «−» при qty=1 удаляет позицию — иначе она была бы мёртвой.

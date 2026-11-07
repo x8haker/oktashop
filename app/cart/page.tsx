@@ -5,9 +5,23 @@ import { Minus, Plus, Trash2, ArrowRight, ArrowLeft } from "lucide-react";
 
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
+import { storeConfig } from "@/lib/config";
 
 export default function CartPage() {
-  const { items, subtotal, count, setQty, remove, clear } = useCart();
+  const { items, subtotal, count, setQty, remove, clear, hydrated } = useCart();
+
+  // До гидратации корзина неизвестна: без этого флага страница мигает
+  // «IT'S EMPTY.» у покупателя, у которого товары есть в localStorage.
+  if (!hydrated) {
+    return (
+      <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
+        <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
+          YOUR BAG
+        </p>
+        <div className="mt-4 h-[15vw] w-full max-w-[900px] animate-pulse bg-asphalt md:h-[9vw]" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
@@ -45,7 +59,7 @@ export default function CartPage() {
                   className="relative h-28 w-24 shrink-0 overflow-hidden bg-asphalt"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={i.image} alt={i.name} className="h-full w-full object-cover" />
+                  <img src={i.image} alt={i.name} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 </Link>
 
                 <div className="flex flex-1 flex-col justify-between">
@@ -115,7 +129,7 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between">
                 <dt className="text-concrete">Delivery</dt>
-                <dd className="text-lime">По Душанбе — 0 TJS</dd>
+                <dd className="text-lime">{storeConfig.delivery.dushanbe}</dd>
               </div>
             </dl>
 

@@ -4,10 +4,12 @@ import { ArrowRight } from "lucide-react";
 
 import Marquee from "@/components/Marquee";
 import { categories, products } from "@/lib/products";
+import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
   title: "Коллекции",
   description: "Коллекции OKTASHOP®: hoodies, baggy jeans, jackets, accessories.",
+  alternates: { canonical: asset("/collections/") },
 };
 
 export default function CollectionsPage() {
@@ -56,7 +58,8 @@ export default function CollectionsPage() {
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6">
                   <div>
                     <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-lime">
-                      {String(i + 1).padStart(2, "0")} / {items.length} ITEMS
+                      {String(i + 1).padStart(2, "0")} / {items.length}{" "}
+                      {items.length === 1 ? "ITEM" : "ITEMS"}
                     </span>
                     <h2 className="mt-2 font-anton text-4xl leading-none tracking-tight md:text-6xl">
                       {c.label}

@@ -50,6 +50,8 @@ export default function ProductDetail({ product }: { product: Product }) {
                 key={imgIdx}
                 src={product.images[imgIdx]}
                 alt={`${product.name} — фото ${imgIdx + 1}`}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover"
               />
               {product.isNew && (
@@ -70,7 +72,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={src} alt="" className="h-full w-full object-cover" />
+                  <img src={src} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 </button>
               ))}
             </div>
@@ -131,7 +133,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                   {qty}
                 </span>
                 <button
-                  onClick={() => setQty((v) => v + 1)}
+                  onClick={() => setQty((v) => Math.min(99, v + 1))}
                   aria-label="Увеличить количество"
                   className="px-3 py-2.5 text-dirty transition-colors hover:text-lime"
                 >
@@ -139,9 +141,9 @@ export default function ProductDetail({ product }: { product: Product }) {
                 </button>
               </div>
 
-              <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-lime">
-                <span className="h-1.5 w-1.5 rounded-full bg-lime" />
-                IN STOCK
+              {/* Наличие не выдумываем: подтверждаем наличие в ответном сообщении. */}
+              <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-concrete">
+                Наличие подтверждаем при заказе
               </span>
             </div>
 
@@ -170,7 +172,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             <div className="mt-8 grid gap-3 border-t border-dirty/10 pt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-concrete">
               <p>✓ Бесплатная доставка по Душанбе</p>
               <p>✓ Оплата при получении</p>
-              <p>✓ Фото реальные — размеры уточняются</p>
+              <p>✓ Фото реальные — снято с товаров магазина</p>
             </div>
           </div>
         </div>
