@@ -19,11 +19,14 @@ export default function CheckoutPage() {
   const { items, subtotal, clear, hydrated } = useCart();
   const [f, setF] = useState<Form>({ name: "", phone: "", city: "Душанбе", details: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
-  const [status, setStatus] = useState<"idle" | "prepared" | "copied">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "sending" | "sent" | "error" | "prepared" | "copied"
+  >("idle");
   const [orderText, setOrderText] = useState("");
 
   const tgConfigured = Boolean(storeConfig.telegram.username);
   const tgHref = storeConfig.contacts.telegram;
+  const workerUrl = storeConfig.telegram.workerUrl;
 
   const validate = () => {
     const e: Partial<Record<keyof Form, string>> = {};
@@ -62,18 +65,51 @@ export default function CheckoutPage() {
       .join("\n");
   };
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (items.length === 0) return;
+    if (items.length === 0 || status === "sending") return;
     if (!validate()) return;
 
     const text = buildOrder();
     setOrderText(text);
 
+    // Основной путь: заказ уходит в Telegram через Cloudflare Worker.
+    if (workerUrl) {
+      setStatus("sending");
+      try {
+        const res = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: f.name,
+            phone: f.phone,
+            city: f.city,
+            details: f.details,
+            items: items.map((i) => ({
+              name: i.name,
+              size: i.size,
+              qty: i.qty,
+              price: i.price,
+            })),
+            subtotal,
+            text,
+          }),
+        });
+        if (res.ok) {
+          clear();
+          setStatus("sent");
+          return;
+        }
+      } catch {
+        /* сеть/Worker недоступны — показываем текст заказа */
+      }
+      setStatus("error");
+      return;
+    }
+
+    // Запасной режим без Worker: открыть чат магазина (если username задан)
+    // и оставить текст заказа на экране для копирования.
     if (tgConfigured) {
-      // Открываем чат магазина: параметр ?text для обычного профиля/бота
-      // не гарантирует подстановку, поэтому текст заказа остаётся на экране
-      // и кнопка «Скопировать» рядом.
       window.open(`https://t.me/${storeConfig.telegram.username}`, "_blank", "noopener,noreferrer");
     }
     setStatus("prepared");
@@ -206,9 +242,11 @@ export default function CheckoutPage() {
             <ol className="mt-3 space-y-2 text-sm text-dirty/70">
               <li>1. Заполните форму — нажмите «ОФОРМИТЬ ЗАКАЗ».</li>
               <li>
-                2. {tgConfigured
-                  ? "Откроется Telegram магазина — отправьте нам текст заказа."
-                  : "Нажмите «Скопировать заказ» и передайте его магазину в Telegram."}
+                2. {workerUrl
+                  ? "Заказ автоматически уйдёт нам в Telegram — подтверждение придёт в ответ."
+                  : tgConfigured
+                    ? "Откроется Telegram магазина — отправьте нам текст заказа."
+                    : "Нажмите «Скопировать заказ» и передайте его магазину в Telegram."}
               </li>
               <li>3. Мы подтвердим наличие, размеры и доставку в ответном сообщении.</li>
               <li>4. Оплата при получении. Онлайн-оплаты на сайте нет.</li>
@@ -217,9 +255,16 @@ export default function CheckoutPage() {
 
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-3 bg-lime py-4 font-mono text-[11px] uppercase tracking-[0.3em] text-void transition-colors hover:bg-dirty sm:w-auto sm:px-10"
+            disabled={status === "sending"}
+            className="flex w-full items-center justify-center gap-3 bg-lime py-4 font-mono text-[11px] uppercase tracking-[0.3em] text-void transition-colors hover:bg-dirty disabled:cursor-wait disabled:opacity-60 sm:w-auto sm:px-10"
           >
-            {tgConfigured ? <>ОФОРМИТЬ ЗАКАЗ <Send size={15} /></> : <>ПОДГОТОВИТЬ ЗАКАЗ <ArrowRight size={15} /></>}
+            {status === "sending" ? (
+              <>ОТПРАВЛЯЕМ… <Send size={15} /></>
+            ) : workerUrl || tgConfigured ? (
+              <>ОФОРМИТЬ ЗАКАЗ <Send size={15} /></>
+            ) : (
+              <>ПОДГОТОВИТЬ ЗАКАЗ <ArrowRight size={15} /></>
+            )}
           </button>
         </form>
 
@@ -263,16 +308,25 @@ export default function CheckoutPage() {
         </aside>
       </div>
 
-      {/* результат: заказ подготовлен */}
-      {status !== "idle" && (
+      {/* результат: заказ отправлен / подготовлен */}
+      {(status === "sent" || status === "error" || status === "prepared" || status === "copied") && (
         <div className="mt-12 border border-lime bg-asphalt p-6">
           <p className="flex items-center gap-2 font-anton text-2xl text-lime md:text-3xl">
-            <Check size={22} /> ЗАКАЗ СОБРАН
+            <Check size={22} />
+            {status === "sent"
+              ? "ЗАКАЗ ОТПРАВЛЕН"
+              : status === "error"
+                ? "ОТПРАВКА НЕ УДАЛАСЬ"
+                : "ЗАКАЗ СОБРАН"}
           </p>
           <p className="mt-2 text-sm text-dirty/70">
-            {tgConfigured
-              ? "Мы открыли Telegram магазина — отправьте текст заказа из поля ниже."
-              : "Скопируйте текст заказа ниже и передайте его менеджеру в любом удобном канале."}
+            {status === "sent"
+              ? "Заказ уже у нас в Telegram. Мы свяжемся с вами для подтверждения наличия, размеров и доставки."
+              : status === "error"
+                ? "Автоматическая отправка сейчас недоступна — скопируйте текст заказа ниже и передайте его магазину в Telegram."
+                : tgConfigured
+                  ? "Мы открыли Telegram магазина — отправьте текст заказа из поля ниже."
+                  : "Скопируйте текст заказа ниже и передайте его менеджеру в любом удобном канале."}
           </p>
 
           <pre className="mt-4 max-h-64 overflow-auto whitespace-pre-wrap border border-dirty/15 bg-void p-4 font-mono text-xs leading-relaxed text-dirty/80">
