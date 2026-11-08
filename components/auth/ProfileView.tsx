@@ -47,9 +47,18 @@ function toOrder(snap: QueryDocumentSnapshot<DocumentData>): Order {
 }
 
 export default function ProfileView() {
-  const { user, profile, loading, ready, logout } = useAuth();
+  const { user, profile, loading, ready, logout, needsVerification, sendVerification } =
+    useAuth();
   const [orders, setOrders] = useState<Order[] | null>(null);
   const [ordersError, setOrdersError] = useState(false);
+  const [resendState, setResendState] = useState<"idle" | "sent" | "error">(
+    "idle"
+  );
+
+  const resend = async () => {
+    await sendVerification();
+    setResendState("sent");
+  };
 
   useEffect(() => {
     if (!user || !db) return;
@@ -114,6 +123,32 @@ export default function ProfileView() {
 
   return (
     <div className="space-y-12">
+      {/* подтверждение email */}
+      {needsVerification && (
+        <section className="border border-lime/40 bg-lime/5 p-5">
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-lime">
+            Подтвердите email
+          </p>
+          <p className="mt-2 text-sm text-dirty/80">
+            Мы отправили письмо на{" "}
+            <span className="font-mono text-dirty">{profile?.email || user.email}</span>.
+            Перейдите по ссылке в письме — аккаунт будет подтверждён.
+          </p>
+          {resendState === "sent" ? (
+            <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-concrete">
+              Письмо отправлено ещё раз
+            </p>
+          ) : (
+            <button
+              onClick={resend}
+              className="mt-3 border border-dirty/25 px-5 py-2 font-mono text-[10px] uppercase tracking-[0.25em] transition-colors hover:border-lime hover:text-lime"
+            >
+              Отправить письмо повторно
+            </button>
+          )}
+        </section>
+      )}
+
       {/* профиль */}
       <section className="border border-dirty/10 bg-asphalt p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">

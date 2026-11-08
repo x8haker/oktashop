@@ -11,6 +11,7 @@ import {
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -34,6 +35,10 @@ interface AuthCtx {
   loading: boolean;
   /** Конфиг Firebase не заполнен — аутентификация выключена. */
   ready: boolean;
+  /** Письмо для подтверждения email ещё не отправлено/не пройдено. */
+  needsVerification: boolean;
+  /** Повторно отправить письмо «Подтвердите почту». */
+  sendVerification: () => Promise<void>;
   register: (
     email: string,
     password: string,
@@ -116,12 +121,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           { merge: true }
         );
         setProfile(data);
+        // Письмо «Подтвердите почту» — фоном, не блокируем регистрацию.
+        sendEmailVerification(cred.user).catch(() => {});
       } catch (e) {
         throw new Error(ruError(e));
       }
     },
     []
   );
+
+  const sendVerification = useCallback(async () => {
+    if (!auth?.currentUser) return;
+    try {
+      await sendEmailVerification(auth.currentUser);
+    } catch {
+      /* письмо не ушло — повторим позже */
+    }
+  }, []);
+
+  // Клик по ссылке из письма не перезагружает страницу сам —
+  // перечитываем пользователя при возврате на вкладку.
+  useEffect(() => {
+    if (!auth || !user || user.emailVerified) return;
+    const a = auth;
+    const refresh = () => a.currentUser?.reload().then(() => setUser(a.currentUser!));
+    const onVisible = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [user]);
 
   const login = useCallback(async (email: string, password: string) => {
     if (!auth) throw new Error("auth disabled");
@@ -143,11 +172,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       profile,
       loading,
       ready: firebaseReady,
+      needsVerification: Boolean(user && !user.emailVerified),
+      sendVerification,
       register,
       login,
       logout,
     }),
-    [user, profile, loading, register, login, logout]
+    [user, profile, loading, sendVerification, register, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
