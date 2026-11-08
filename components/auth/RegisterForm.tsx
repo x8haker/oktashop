@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ArrowRight, Loader2 } from "lucide-react";
 
 import { useAuth } from "@/lib/auth";
+import { storeConfig } from "@/lib/config";
 
 const inputCls = (bad?: boolean) =>
   `w-full border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-lime ${
@@ -44,6 +45,21 @@ export default function RegisterForm() {
         f.name.trim(),
         f.phone.trim()
       );
+      // Уведомление в Telegram — фоном, не блокируем переход.
+      // Ошибка не важна: аккаунт уже создан, а токен бота живёт в Worker.
+      const workerUrl = storeConfig.telegram.workerUrl;
+      if (workerUrl) {
+        fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "register",
+            name: f.name.trim(),
+            phone: f.phone.trim(),
+            email: f.email.trim(),
+          }),
+        }).catch(() => {});
+      }
       router.push("/profile");
     } catch (e2) {
       setError(e2 instanceof Error ? e2.message : "Ошибка регистрации");

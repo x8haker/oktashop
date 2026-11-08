@@ -9,8 +9,11 @@
 //      (необязательно) ALLOWED_ORIGIN (text) — https://x8haker.github.io
 //   4. Settings → Domains & Routes → Add route или оставить *.workers.dev.
 //
-// Сайт обращается: POST https://<worker>.workers.dev/order
-// body: { name, phone, city, details, items: [...], subtotal, text }
+// Сайт обращается:
+//   POST https://<worker>.workers.dev/order   — новый заказ
+//     body: { name, phone, city, details, items: [...], subtotal }
+//   POST https://<worker>.workers.dev/order   — регистрация покупателя
+//     body: { type: "register", name, phone, email }
 
 const CORS = {
   "Access-Control-Allow-Origin": "*", // при желании сузить до ALLOWED_ORIGIN
@@ -53,7 +56,15 @@ export default {
       return json({ ok: false, error: "validation" }, 400);
     }
 
-    const text = buildMessage(data, name, phone, city);
+    const isRegister = data.type === "register";
+    const email = String(data.email || "").trim().slice(0, 120);
+    if (isRegister && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return json({ ok: false, error: "validation" }, 400);
+    }
+
+    const text = isRegister
+      ? buildRegisterMessage(name, phone, email)
+      : buildMessage(data, name, phone, city);
 
     // Отправка в Telegram.
     const apiUrl = `https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`;
@@ -76,6 +87,19 @@ export default {
     return json({ ok: true });
   },
 };
+
+// Уведомление о новой регистрации покупателя.
+function buildRegisterMessage(name, phone, email) {
+  return [
+    "🆕 <b>НОВАЯ РЕГИСТРАЦИЯ OKTASHOP®</b>",
+    "",
+    `👤 ${esc(name)}`,
+    `📞 ${esc(phone)}`,
+    `✉️ ${esc(email)}`,
+    "",
+    `<i>${new Date().toISOString().slice(0, 16).replace("T", " ")} UTC</i>`,
+  ].join("\n");
+}
 
 function buildMessage(data, name, phone, city) {
   const items = Array.isArray(data.items) ? data.items.slice(0, 30) : [];
