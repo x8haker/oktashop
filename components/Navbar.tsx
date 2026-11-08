@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, ShoppingBag, Search } from "lucide-react";
+import { Menu, X, ShoppingBag, Search, UserRound } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { popBodyLock, pushBodyLock } from "@/lib/body-lock";
 
@@ -125,6 +125,14 @@ export default function Navbar() {
             </Link>
 
             <Link
+              href="/profile"
+              aria-label="Профиль"
+              className="hidden text-dirty transition-colors hover:text-lime md:block"
+            >
+              <UserRound size={18} strokeWidth={1.5} />
+            </Link>
+
+            <Link
               href="/cart"
               aria-label={`Корзина, товаров: ${cartCount}`}
               className="relative flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-lime"
@@ -173,7 +181,7 @@ export default function Navbar() {
             </div>
 
             <nav className="flex flex-1 flex-col justify-center gap-2 px-5">
-              {[...LINKS, { href: "/shop#filters", label: "SEARCH" }, { href: "/cart", label: "CART" }, { href: "/delivery", label: "DELIVERY" }, { href: "/contact", label: "CONTACT" }].map(
+              {[...LINKS, { href: "/shop#filters", label: "SEARCH" }, { href: "/cart", label: "CART" }, { href: "/profile", label: "ACCOUNT" }, { href: "/delivery", label: "DELIVERY" }, { href: "/contact", label: "CONTACT" }].map(
                 (l, i) => (
                   <motion.div
                     key={l.href}

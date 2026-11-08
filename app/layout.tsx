@@ -4,6 +4,7 @@ import { Anton, Space_Grotesk, Bebas_Neue, JetBrains_Mono } from "next/font/goog
 import "./globals.css";
 
 import { CartProvider } from "@/lib/cart";
+import { AuthProvider } from "@/lib/auth";
 import { BASE_PATH, asset } from "@/lib/asset";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollEffects from "@/components/ScrollEffects";
@@ -113,16 +114,18 @@ export default function RootLayout({
         <ScrollEffects />
         <Cursor />
 
-        <CartProvider>
-          {/* Navbar использует useSearchParams (active-состояние пунктов меню) —
-              в Next 15 это требует Suspense-границы. */}
-          <Suspense fallback={null}>
-            <Navbar />
-          </Suspense>
-          {/* tabindex=-1: skip-link передаёт фокус на main (a11y) */}
-          <main id="main" tabIndex={-1}>{children}</main>
-          <Footer />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            {/* Navbar использует useSearchParams (active-состояние пунктов меню) —
+                в Next 15 это требует Suspense-границы. */}
+            <Suspense fallback={null}>
+              <Navbar />
+            </Suspense>
+            {/* tabindex=-1: skip-link передаёт фокус на main (a11y) */}
+            <main id="main" tabIndex={-1}>{children}</main>
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );
