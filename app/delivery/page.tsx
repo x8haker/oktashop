@@ -16,13 +16,13 @@ export default function DeliveryPage() {
   return (
     <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
       <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-        INFO / DELIVERY
+        ИНФО / ДОСТАВКА
       </p>
       <h1
         data-reveal="mask"
         className="mt-4 font-anton text-[15vw] leading-[0.85] tracking-tight md:text-[9vw]"
       >
-        DELIVERY
+        ДОСТАВКА
       </h1>
 
       <div className="mt-14 grid gap-px bg-dirty/10 md:grid-cols-3">
@@ -58,7 +58,7 @@ export default function DeliveryPage() {
             href="/shop"
             className="inline-flex items-center gap-3 bg-lime px-8 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-void transition-colors hover:bg-dirty"
           >
-            SHOP THE DROP <ArrowRight size={15} />
+            СМОТРЕТЬ ДРОП <ArrowRight size={15} />
           </Link>
           <Link
             href="/contact"

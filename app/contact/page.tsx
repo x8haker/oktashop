@@ -27,23 +27,23 @@ export default function ContactPage() {
       value: (c.instagram as string).replace(/^https?:\/\/(www\.)?instagram\.com\//, "@"),
       href: c.instagram,
     },
-    { icon: Mail, label: "EMAIL", value: c.email, href: `mailto:${c.email}` },
-    { icon: MapPin, label: "ADDRESS", value: c.address, href: undefined },
+    { icon: Mail, label: "ПОЧТА", value: c.email, href: `mailto:${c.email}` },
+    { icon: MapPin, label: "АДРЕС", value: c.address, href: undefined },
     ...(c.phone
-      ? [{ icon: Phone, label: "PHONE", value: c.phone, href: `tel:${c.phone}` }]
+      ? [{ icon: Phone, label: "ТЕЛЕФОН", value: c.phone, href: `tel:${c.phone}` }]
       : []),
   ].filter(Boolean) as { icon: typeof Send; label: string; value: string; href?: string }[];
 
   return (
     <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
       <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-        CONTACT / SAY HELLO
+        КОНТАКТЫ / ПРИВЕТ
       </p>
       <h1
         data-reveal="mask"
         className="mt-4 font-anton text-[15vw] leading-[0.85] tracking-tight md:text-[9vw]"
       >
-        GET IN TOUCH
+        СВЯЖИСЬ С НАМИ
       </h1>
 
       <div className="mt-12 grid gap-10 md:grid-cols-2">
@@ -85,7 +85,7 @@ export default function ContactPage() {
 
         <div data-reveal className="border border-dirty/10 bg-asphalt p-7">
           <h2 className="font-anton text-4xl tracking-tight">
-            WRITE US
+            НАПИШИ НАМ
             <span className="text-lime">.</span>
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-dirty/70">

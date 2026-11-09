@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Check, ChevronRight, Minus, Plus } from "lucide-react";
 
-import { formatPrice, getRelated, type Product } from "@/lib/products";
+import { formatPrice, getRelated, catLabel, type Product } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import ProductCard from "@/components/ProductCard";
 import QuickView from "@/components/QuickView";
@@ -30,12 +30,12 @@ export default function ProductDetail({ product }: { product: Product }) {
       <div className="mx-auto max-w-[1600px] px-5 pt-28 md:px-8 md:pt-36">
         {/* хлебные крошки */}
         <nav aria-label="Хлебные крошки" className="mb-6 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-concrete">
-          <Link href="/" className="hover:text-lime">HOME</Link>
+          <Link href="/" className="hover:text-lime">ГЛАВНАЯ</Link>
           <ChevronRight size={12} />
-          <Link href="/shop" className="hover:text-lime">SHOP</Link>
+          <Link href="/shop" className="hover:text-lime">МАГАЗИН</Link>
           <ChevronRight size={12} />
           <Link href={`/shop?category=${encodeURIComponent(product.category)}`} className="hover:text-lime">
-            {product.category}
+            {catLabel(product.category)}
           </Link>
           <ChevronRight size={12} />
           <span className="text-dirty">{product.sku}</span>
@@ -56,7 +56,7 @@ export default function ProductDetail({ product }: { product: Product }) {
               />
               {product.isNew && (
                 <span className="absolute left-4 top-4 bg-lime px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-void">
-                  NEW
+                  НОВОЕ
                 </span>
               )}
             </div>
@@ -81,7 +81,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           {/* инфо */}
           <div className="md:sticky md:top-28 md:self-start">
             <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-lime">
-              {product.category} / {product.sku}
+              {catLabel(product.category)} / {product.sku}
             </p>
             <h1 className="mt-3 font-anton text-5xl leading-[0.9] tracking-tight md:text-7xl">
               {product.name}
@@ -96,7 +96,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             {/* размеры */}
             <fieldset className="mt-8">
               <legend className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-concrete">
-                SIZE — выберите
+                РАЗМЕР — выберите
               </legend>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map((s) => (
@@ -119,7 +119,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             {/* количество */}
             <div className="mt-6 flex items-center gap-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-concrete">
-                QTY
+                КОЛ-ВО
               </span>
               <div className="flex items-center border border-dirty/25">
                 <button
@@ -158,14 +158,14 @@ export default function ProductDetail({ product }: { product: Product }) {
                     <Check size={15} /> ДОБАВЛЕНО
                   </span>
                 ) : (
-                  "ADD TO CART"
+                  "В КОРЗИНУ"
                 )}
               </button>
               <Link
                 href="/cart"
                 className="flex-1 border border-dirty/25 py-4 text-center font-mono text-[11px] uppercase tracking-[0.3em] transition-colors hover:border-lime hover:text-lime"
               >
-                GO TO CART
+                ПЕРЕЙТИ В КОРЗИНУ
               </Link>
             </div>
 
@@ -182,10 +182,10 @@ export default function ProductDetail({ product }: { product: Product }) {
           <section className="mt-24 pb-16">
             <div className="mb-8 flex items-end justify-between">
               <h2 className="font-anton text-4xl tracking-tight md:text-6xl">
-                YOU MAY ALSO LIKE
+                ВАМ ТОЖЕ ПОНРАВИТСЯ
               </h2>
               <Link href="/shop" className="font-mono text-[10px] uppercase tracking-[0.3em] text-lime hover:underline">
-                View all →
+                Смотреть все →
               </Link>
             </div>
             <div data-stagger className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">

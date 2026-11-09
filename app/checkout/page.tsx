@@ -166,7 +166,7 @@ export default function CheckoutPage() {
     return (
       <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
         <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-          STEP 01 / DELIVERY DETAILS
+          ШАГ 01 / ДАННЫЕ ДОСТАВКИ
         </p>
         <div className="mt-4 h-[15vw] w-full max-w-[900px] animate-pulse bg-asphalt md:h-[9vw]" />
       </div>
@@ -176,13 +176,13 @@ export default function CheckoutPage() {
   if (items.length === 0 && status === "idle") {
     return (
       <div className="mx-auto max-w-3xl px-5 pb-24 pt-40 text-center">
-        <h1 className="font-anton text-6xl tracking-tight md:text-8xl">NO ITEMS.</h1>
+        <h1 className="font-anton text-6xl tracking-tight md:text-8xl">ПУСТО.</h1>
         <p className="mt-3 text-sm text-concrete">Сначала добавьте товары в корзину.</p>
         <Link
           href="/shop"
           className="mt-8 inline-flex items-center gap-3 bg-lime px-8 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-void hover:bg-dirty"
         >
-          SHOP THE DROP <ArrowRight size={15} />
+          СМОТРЕТЬ ДРОП <ArrowRight size={15} />
         </Link>
       </div>
     );
@@ -191,13 +191,13 @@ export default function CheckoutPage() {
   return (
     <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
       <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-        STEP 01 / DELIVERY DETAILS
+        ШАГ 01 / ДАННЫЕ ДОСТАВКИ
       </p>
       <h1
         data-reveal="mask"
         className="mt-4 font-anton text-[13vw] leading-[0.85] tracking-tight md:text-[8vw]"
       >
-        CHECKOUT
+        ОФОРМЛЕНИЕ
       </h1>
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1.5fr_1fr]">
@@ -324,7 +324,7 @@ export default function CheckoutPage() {
           </ul>
 
           <div className="mt-5 flex items-end justify-between">
-            <span className="font-mono text-xs uppercase tracking-widest text-concrete">TOTAL</span>
+            <span className="font-mono text-xs uppercase tracking-widest text-concrete">ВСЕГО</span>
             <span className="font-anton text-3xl text-lime tabular-nums">
               {formatPrice(subtotal)}
             </span>

@@ -15,16 +15,16 @@ export const metadata: Metadata = {
 };
 
 const LOOKBOOK = [
-  { src: asset("/lookbook/01.jpg"), cap: "LOOK 01 / NEW YORK" },
-  { src: asset("/lookbook/03.jpg"), cap: "LOOK 02 / STREET LAYERS" },
-  { src: asset("/lookbook/05.jpg"), cap: "LOOK 03 / MIRROR FIT" },
-  { src: asset("/lookbook/06.jpg"), cap: "LOOK 04 / EARTH TONES" },
-  { src: asset("/lookbook/07.jpg"), cap: "LOOK 05 / PREPPY CLUB" },
-  { src: asset("/lookbook/10.jpg"), cap: "LOOK 06 / WIDE LEG DENIM" },
-  { src: asset("/lookbook/02.jpg"), cap: "LOOK 07 / CITY MOTION" },
-  { src: asset("/lookbook/04.jpg"), cap: "LOOK 08 / MONOCHROME" },
-  { src: asset("/lookbook/08.jpg"), cap: "LOOK 09 / OFF DUTY" },
-  { src: asset("/lookbook/09.jpg"), cap: "LOOK 10 / LATE SHIFT" },
+  { src: asset("/lookbook/01.jpg"), cap: "ОБРАЗ 01 / НЬЮ-ЙОРК" },
+  { src: asset("/lookbook/03.jpg"), cap: "ОБРАЗ 02 / УЛИЧНЫЕ СЛОИ" },
+  { src: asset("/lookbook/05.jpg"), cap: "ОБРАЗ 03 / ЗЕРКАЛЬНЫЙ ОБРАЗ" },
+  { src: asset("/lookbook/06.jpg"), cap: "ОБРАЗ 04 / ЗЕМЛЯНЫЕ ТОНА" },
+  { src: asset("/lookbook/07.jpg"), cap: "ОБРАЗ 05 / ПРЕППИ-КЛУБ" },
+  { src: asset("/lookbook/10.jpg"), cap: "ОБРАЗ 06 / ШИРОКИЙ КРОЙ" },
+  { src: asset("/lookbook/02.jpg"), cap: "ОБРАЗ 07 / ГОРОДСКОЕ ДВИЖЕНИЕ" },
+  { src: asset("/lookbook/04.jpg"), cap: "ОБРАЗ 08 / МОНОХРОМ" },
+  { src: asset("/lookbook/08.jpg"), cap: "ОБРАЗ 09 / ВНЕ СМЕНЫ" },
+  { src: asset("/lookbook/09.jpg"), cap: "ОБРАЗ 10 / ПОЗДНИЙ ВЫХОД" },
 ];
 
 export default function HomePage() {
@@ -40,7 +40,7 @@ export default function HomePage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset("/lookbook/09.jpg")}
-              alt="Streetwear editorial"
+              alt="Фото лукбука OKTASHOP"
               data-parallax="0.25"
               loading="eager"
               decoding="async"
@@ -65,15 +65,15 @@ export default function HomePage() {
             data-reveal
             className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime md:text-xs"
           >
-            OKTASHOP® / INDEPENDENT STREET CULTURE / DROP 001 — 2026
+            OKTASHOP® / НЕЗАВИСИМАЯ УЛИЧНАЯ КУЛЬТУРА / ДРОП 001 — 2026
           </p>
 
           <h2 className="mt-5 font-anton text-[15vw] leading-[0.85] tracking-tight md:text-[11vw]">
             <span data-reveal="mask" className="block">
-              NOT MADE
+              НЕ СОЗДАНО
             </span>
             <span data-reveal="mask" data-delay="0.15" className="block">
-              TO FIT IN<span className="text-lime">.</span>
+              ЧТОБЫ ВПИСАТЬСЯ<span className="text-lime">.</span>
             </span>
           </h2>
 
@@ -84,7 +84,7 @@ export default function HomePage() {
                 href="/shop"
                 className="bg-lime px-7 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-void hover:bg-dirty"
               >
-                EXPLORE COLLECTION
+                СМОТРЕТЬ КОЛЛЕКЦИЮ
                 <ArrowRight size={15} />
               </MagneticButton>
               <MagneticButton
@@ -92,7 +92,7 @@ export default function HomePage() {
                 href="#new-drop"
                 className="border border-dirty/30 px-7 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-dirty hover:border-lime hover:text-lime"
               >
-                DISCOVER THE DROP
+                УВИДЕТЬ ДРОП
               </MagneticButton>
             </div>
 
@@ -102,7 +102,7 @@ export default function HomePage() {
               className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-concrete"
             >
               <span className="h-px w-10 bg-concrete" />
-              SCROLL
+              ВНИЗ
               <span className="inline-block h-8 w-px animate-pulse bg-lime" />
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function HomePage() {
       <section className="border-t border-dirty/10">
         <div className="mx-auto max-w-[1600px] px-5 pt-6 md:px-8">
           <p data-reveal className="font-bebas text-lg tracking-[0.3em] text-lime">
-            SHOP BY CATEGORY
+            ВЫБОР ПО КАТЕГОРИИ
           </p>
         </div>
 
@@ -182,28 +182,28 @@ export default function HomePage() {
 
         <div className="relative mx-auto max-w-[1600px] px-5 md:px-8">
           <p data-reveal className="font-bebas text-lg tracking-[0.3em] text-lime">
-            MANIFESTO / 001
+            МАНИФЕСТ / 001
           </p>
           <p
             data-reveal
             data-delay="0.1"
             className="mt-6 font-anton text-[9vw] leading-[1.02] tracking-tight md:text-[5.5vw]"
           >
-            WE DON&apos;T FOLLOW TRENDS<span className="text-lime">.</span>
+            МЫ НЕ СЛЕДУЕМ ЗА ТРЕНДАМИ<span className="text-lime">.</span>
           </p>
           <p
             data-reveal
             data-delay="0.25"
             className="stroke-text font-anton text-[9vw] leading-[1.02] tracking-tight md:text-[5.5vw]"
           >
-            WE CREATE OUR OWN UNIFORM.
+            МЫ СОЗДАЁМ СВОЮ ФОРМУ.
           </p>
 
           <div className="mt-12 grid gap-8 border-t border-dirty/10 pt-8 md:grid-cols-3">
             {[
-              ["NO RULES.", "Мы не подстраиваемся под чужие витрины и тренды."],
-              ["NO UNIFORM.", "Каждый собирает образ сам — мы даём только основу."],
-              ["NOT FOR EVERYONE.", "Это нормально. Уличная культура всегда была такой."],
+              ["БЕЗ ПРАВИЛ.", "Мы не подстраиваемся под чужие витрины и тренды."],
+              ["НЕ ОДИН ОБРАЗ.", "Каждый собирает образ сам — мы даём только основу."],
+              ["НЕ ДЛЯ ВСЕХ.", "Это нормально. Уличная культура всегда была такой."],
             ].map(([t, d], i) => (
               <div key={t} data-reveal data-delay={`${i * 0.12}`}>
                 <h3 className="font-bebas text-2xl tracking-wide text-lime">{t}</h3>
@@ -217,9 +217,9 @@ export default function HomePage() {
       {/* ============ 07 LOOKBOOK — горизонтальная галерея ============ */}
       <section data-horizontal className="relative overflow-hidden bg-void">
         <div className="flex items-baseline justify-between px-5 pt-14 md:px-8">
-          <p className="font-bebas text-lg tracking-[0.3em] text-lime">02 / THE STREET EDIT</p>
+          <p className="font-bebas text-lg tracking-[0.3em] text-lime">02 / УЛИЧНЫЙ ВЫБОР</p>
           <p className="hidden font-mono text-[10px] uppercase tracking-[0.3em] text-concrete md:block">
-            Scroll →
+            Листай →
           </p>
         </div>
 
@@ -249,16 +249,16 @@ export default function HomePage() {
         <div className="grid gap-10 md:grid-cols-[1fr_1.2fr]">
           <div>
             <p data-reveal className="font-bebas text-lg tracking-[0.3em] text-lime">
-              DELIVERY / HOW IT WORKS
+              ДОСТАВКА / КАК ЭТО РАБОТАЕТ
             </p>
             <h2
               data-reveal
               data-delay="0.1"
               className="mt-3 font-anton text-5xl leading-[0.9] tracking-tight md:text-7xl"
             >
-              GET IT
+              ЗАБИРАЙ
               <br />
-              OUTSIDE
+              НА УЛИЦУ
             </h2>
           </div>
 
@@ -266,17 +266,17 @@ export default function HomePage() {
             {[
               {
                 icon: Truck,
-                t: "FREE IN DUSHANBE",
+                t: "БЕСПЛАТНО В ДУШАНБЕ",
                 d: storeConfig.delivery.dushanbe,
               },
               {
                 icon: MapPin,
-                t: "OTHER CITIES",
+                t: "ДРУГИЕ ГОРОДА",
                 d: storeConfig.delivery.otherCities,
               },
               {
                 icon: MessageCircle,
-                t: "CONFIRM FIRST",
+                t: "СНАЧАЛА ПОДТВЕРДИМ",
                 d: storeConfig.delivery.note,
               },
             ].map(({ icon: Icon, t, d }) => (
@@ -305,9 +305,9 @@ export default function HomePage() {
             data-reveal="mask"
             className="font-anton text-[12vw] leading-[0.88] tracking-tight md:text-[8vw]"
           >
-            YOUR STYLE.
+            ТВОЙ СТИЛЬ.
             <br />
-            YOUR RULES<span className="text-lime">.</span>
+            ТВОИ ПРАВИЛА<span className="text-lime">.</span>
           </h2>
 
           <div data-reveal data-delay="0.2" className="mt-10">
@@ -316,13 +316,13 @@ export default function HomePage() {
               href="/shop"
               className="mx-auto bg-lime px-10 py-5 font-mono text-xs uppercase tracking-[0.3em] text-void hover:bg-dirty"
             >
-              SHOP THE DROP
+              В МАГАЗИН
               <ArrowRight size={16} />
             </MagneticButton>
           </div>
 
           <p data-reveal data-delay="0.3" className="mt-8 font-mono text-[10px] uppercase tracking-[0.4em] text-concrete">
-            {products.length} pieces available / drop 001 / {storeConfig.location}
+            {products.length} позиций в наличии / дроп 001 / {storeConfig.location}
           </p>
         </div>
       </section>

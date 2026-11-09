@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Anton, Space_Grotesk, Bebas_Neue, JetBrains_Mono } from "next/font/google";
+import { Roboto_Condensed, Manrope, Oswald, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 import { CartProvider } from "@/lib/cart";
@@ -14,23 +14,27 @@ import PageTransition from "@/components/PageTransition";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const anton = Anton({
-  subsets: ["latin"],
-  weight: "400",
+// Шрифты с кириллицей (в прежних Anton/Space Grotesk/Bebas её нет —
+// русские заголовки падали в системный Impact).
+// Имена CSS-переменных и Tailwind-классов оставлены прежними,
+// чтобы не переписывать сотни разметок.
+const anton = Roboto_Condensed({
+  subsets: ["latin", "cyrillic"],
+  weight: ["700", "900"], // display-заголовки: Anton был ultra-black
   variable: "--font-anton",
   display: "swap",
 });
 
-const grotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+const grotesk = Manrope({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-grotesk",
   display: "swap",
 });
 
-const bebas = Bebas_Neue({
-  subsets: ["latin"],
-  weight: "400",
+const bebas = Oswald({
+  subsets: ["latin", "cyrillic"],
+  weight: ["500", "700"], // узкий капс для микро-лейблов вместо Bebas Neue
   variable: "--font-bebas",
   display: "swap",
 });
@@ -52,7 +56,7 @@ export const metadata: Metadata = {
     template: "%s — OKTASHOP®",
   },
   description:
-    "OKTASHOP® — независимый streetwear-магазин из Душанбе. Худи, baggy jeans, куртки и аксессуары. Уличная культура, 90s skate, underground style.",
+    "OKTASHOP® — независимый магазин стритвира из Душанбе. Худи, багги-джинсы, куртки и аксессуары. Уличная культура, стиль 90-х и скейт-культура.",
   keywords: [
     "streetwear Dushanbe",
     "OKTASHOP",
@@ -63,7 +67,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "OKTASHOP® — NOT MADE TO FIT IN.",
     description:
-      "Independent streetwear store. Drop 001 — hoodies, baggy jeans, jackets, accessories.",
+      "Независимый магазин стритвира. Дроп 001 — худи, багги джинсы, куртки и аксессуары.",
     type: "website",
     locale: "ru_RU",
     siteName: "OKTASHOP®",
@@ -73,7 +77,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "OKTASHOP®",
-    description: "NOT MADE TO FIT IN. Independent streetwear store.",
+    description: "NOT MADE TO FIT IN. Независимый магазин стритвира из Душанбе.",
     images: [asset("/lookbook/01.jpg")],
   },
   // canonical здесь НЕ задаётся: он применялся бы ко всем страницам сразу

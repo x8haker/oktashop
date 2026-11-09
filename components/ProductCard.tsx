@@ -54,7 +54,7 @@ export default function ProductCard({
 
         {product.isNew && (
           <span className="absolute left-3 top-3 bg-lime px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-void">
-            NEW
+            НОВОЕ
           </span>
         )}
 
@@ -84,7 +84,7 @@ export default function ProductCard({
                   : "bg-dirty/95 text-void hover:bg-lime"
               }`}
             >
-              Quick view
+              Быстрый просмотр
             </button>
           )}
           <button

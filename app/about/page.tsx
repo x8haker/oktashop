@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 };
 
 const VALUES = [
-  ["RAW", "Мы не вылизываем вещи до состояния витрины. Улица — не студия."],
-  ["INDEPENDENT", "Никаких корпоративных партнёров и чужих дресс-кодов."],
-  ["HONEST", "Реальные фото, реальные размеры, честное описание."],
-  ["LOCAL", "Душанбе — наша база. Отсюда растёт вся идея."],
+  ["ЖИВОЕ", "Мы не вылизываем вещи до состояния витрины. Улица — не студия."],
+  ["НЕЗАВИСИМЫЕ", "Никаких корпоративных партнёров и чужих дресс-кодов."],
+  ["ЧЕСТНЫЕ", "Реальные фото, реальные размеры, честное описание."],
+  ["СВОИ", "Душанбе — наша база. Отсюда растёт вся идея."],
 ];
 
 export default function AboutPage() {
@@ -24,17 +24,17 @@ export default function AboutPage() {
     <>
       <header className="mx-auto max-w-[1600px] px-5 pb-12 pt-32 md:px-8 md:pt-44">
         <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-          ABOUT / MANIFESTO
+          О НАС / МАНИФЕСТ
         </p>
         <h1
           data-reveal="mask"
           className="mt-4 font-anton text-[15vw] leading-[0.85] tracking-tight md:text-[9vw]"
         >
-          WE DON&apos;T FIT IN
+          МЫ НЕ ВПИСЫВАЕМСЯ
         </h1>
       </header>
 
-      <Marquee text="INDEPENDENT STYLE — UNDERGROUND — SKATE CULTURE — 90s AESTHETIC —" />
+      <Marquee text="НЕЗАВИСИМЫЙ СТИЛЬ — АНДЕРГРАУНД — СКЕЙТ-КУЛЬТУРА — ЭСТЕТИКА 90-Х —" />
 
       <section className="mx-auto max-w-[1600px] px-5 py-16 md:px-8 md:py-24">
         <div className="grid gap-10 md:grid-cols-2">
@@ -56,7 +56,7 @@ export default function AboutPage() {
               href="/shop"
               className="inline-flex items-center gap-3 bg-lime px-8 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-void transition-colors hover:bg-dirty"
             >
-              EXPLORE COLLECTION <ArrowRight size={15} />
+              СМОТРЕТЬ КОЛЛЕКЦИЮ <ArrowRight size={15} />
             </Link>
           </div>
 

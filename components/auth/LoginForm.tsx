@@ -82,7 +82,7 @@ export default function LoginForm() {
     <form onSubmit={submit} noValidate className="max-w-md space-y-5">
       <label className="block">
         <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.3em] text-concrete">
-          EMAIL *
+          ПОЧТА *
         </span>
         <input
           value={email}

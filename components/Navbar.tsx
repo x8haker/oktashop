@@ -9,10 +9,10 @@ import { useCart } from "@/lib/cart";
 import { popBodyLock, pushBodyLock } from "@/lib/body-lock";
 
 const LINKS = [
-  { href: "/shop", label: "SHOP", match: (p: string, q: string) => p === "/shop" && q !== "new=1" },
-  { href: "/shop?new=1", label: "NEW DROP", match: (p: string, q: string) => p === "/shop" && q === "new=1" },
-  { href: "/collections", label: "COLLECTIONS", match: (p: string) => p === "/collections" },
-  { href: "/about", label: "ABOUT", match: (p: string) => p === "/about" },
+  { href: "/shop", label: "МАГАЗИН", match: (p: string, q: string) => p === "/shop" && q !== "new=1" },
+  { href: "/shop?new=1", label: "НОВЫЙ ДРОП", match: (p: string, q: string) => p === "/shop" && q === "new=1" },
+  { href: "/collections", label: "КОЛЛЕКЦИИ", match: (p: string) => p === "/collections" },
+  { href: "/about", label: "О НАС", match: (p: string) => p === "/about" },
 ];
 
 export default function Navbar() {
@@ -138,7 +138,7 @@ export default function Navbar() {
               className="relative flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-lime"
             >
               <ShoppingBag size={18} strokeWidth={1.5} />
-              <span className="tabular-nums">CART ({cartCount})</span>
+              <span className="tabular-nums">КОРЗИНА ({cartCount})</span>
               {mounted && count > 0 && (
                 <span className="absolute -right-2 -top-1 h-1.5 w-1.5 animate-pulse rounded-full bg-lime" />
               )}
@@ -181,7 +181,7 @@ export default function Navbar() {
             </div>
 
             <nav className="flex flex-1 flex-col justify-center gap-2 px-5">
-              {[...LINKS, { href: "/shop#filters", label: "SEARCH" }, { href: "/cart", label: "CART" }, { href: "/profile", label: "ACCOUNT" }, { href: "/delivery", label: "DELIVERY" }, { href: "/contact", label: "CONTACT" }].map(
+              {[...LINKS, { href: "/shop#filters", label: "ПОИСК" }, { href: "/cart", label: "КОРЗИНА" }, { href: "/profile", label: "АККАУНТ" }, { href: "/delivery", label: "ДОСТАВКА" }, { href: "/contact", label: "КОНТАКТЫ" }].map(
                 (l, i) => (
                   <motion.div
                     key={l.href}
@@ -201,7 +201,7 @@ export default function Navbar() {
             </nav>
 
             <div className="flex items-center justify-between px-5 py-6 font-mono text-[10px] uppercase tracking-[0.3em] text-concrete">
-              <span>Dushanbe</span>
+              <span>Душанбе</span>
               <span className="text-lime">NOT MADE TO FIT IN.</span>
             </div>
           </motion.div>

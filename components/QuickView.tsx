@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
-import { formatPrice, type Product } from "@/lib/products";
+import { formatPrice, catLabel, type Product } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import { popBodyLock, pushBodyLock } from "@/lib/body-lock";
 
@@ -92,7 +92,7 @@ export default function QuickView({
             <div className="flex flex-col justify-between p-6 md:p-8">
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-lime">
-                  {product.category} / {product.sku}
+                  {catLabel(product.category)} / {product.sku}
                 </p>
                 <h2 className="mt-3 font-anton text-3xl leading-none md:text-4xl">
                   {product.name}
@@ -136,14 +136,14 @@ export default function QuickView({
                   }}
                   className="w-full bg-lime py-3.5 font-mono text-[11px] uppercase tracking-[0.25em] text-void transition-colors hover:bg-dirty"
                 >
-                  Add to cart{size ? ` — ${size}` : ""}
+                  В КОРЗИНУ{size ? ` — ${size}` : ""}
                 </button>
                 <Link
                   href={`/product/${product.slug}`}
                   onClick={onClose}
                   className="w-full border border-dirty/25 py-3.5 text-center font-mono text-[11px] uppercase tracking-[0.25em] transition-colors hover:border-lime hover:text-lime"
                 >
-                  View full details
+                  Подробнее о товаре
                 </Link>
               </div>
             </div>

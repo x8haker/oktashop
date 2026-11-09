@@ -15,7 +15,7 @@ export default function RegisterPage() {
   return (
     <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
       <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-        ACCOUNT / JOIN US
+        АККАУНТ / ПРИСОЕДИНЯЙСЯ
       </p>
       <h1
         data-reveal="mask"

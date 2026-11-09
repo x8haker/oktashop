@@ -8,7 +8,7 @@ import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
   title: "Коллекции",
-  description: "Коллекции OKTASHOP®: hoodies, baggy jeans, jackets, accessories.",
+  description: "Коллекции OKTASHOP®: худи, багги джинсы, куртки, аксессуары.",
   alternates: { canonical: asset("/collections/") },
 };
 
@@ -17,13 +17,13 @@ export default function CollectionsPage() {
     <>
       <header className="mx-auto max-w-[1600px] px-5 pb-10 pt-32 md:px-8 md:pt-44">
         <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-          DROP 001 — FALL / WINTER
+          ДРОП 001 — ОСЕНЬ / ЗИМА
         </p>
         <h1
           data-reveal="mask"
           className="mt-4 font-anton text-[15vw] leading-[0.85] tracking-tight md:text-[9vw]"
         >
-          COLLECTIONS
+          КОЛЛЕКЦИИ
         </h1>
         <p className="mt-4 max-w-xl text-sm text-concrete">
           Линии каталога — один язык. Каждая собрана вокруг силуэта, а не вокруг
@@ -31,7 +31,7 @@ export default function CollectionsPage() {
         </p>
       </header>
 
-      <Marquee text="DROP 001 — NOT FOR EVERYONE — FIND YOUR OWN UNIFORM — STREET CULTURE NEVER DIES —" />
+      <Marquee text="ДРОП 001 — НЕ ДЛЯ ВСЕХ — НАЙДИ СВОЮ ФОРМУ — УЛИЧНАЯ КУЛЬТУРА НИКОГДА НЕ УМИРАЕТ —" />
 
       <div className="mx-auto max-w-[1600px] px-5 py-14 md:px-8 md:py-20">
         <div data-stagger className="grid gap-px bg-dirty/10 md:grid-cols-2">
@@ -59,7 +59,7 @@ export default function CollectionsPage() {
                   <div>
                     <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-lime">
                       {String(i + 1).padStart(2, "0")} / {items.length}{" "}
-                      {items.length === 1 ? "ITEM" : "ITEMS"}
+                      {items.length === 1 ? "ТОВАР" : items.length < 5 ? "ТОВАРА" : "ТОВАРОВ"}
                     </span>
                     <h2 className="mt-2 font-anton text-4xl leading-none tracking-tight md:text-6xl">
                       {c.label}

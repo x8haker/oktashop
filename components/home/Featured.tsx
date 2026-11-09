@@ -16,14 +16,14 @@ export default function Featured() {
         <div className="mb-10 flex items-end justify-between md:mb-16">
           <div>
             <p data-reveal className="font-bebas text-lg tracking-[0.3em] text-void/60">
-              03 / CURATED
+              03 / ВЫБОР РЕДАКЦИИ
             </p>
             <h2
               data-reveal
               data-delay="0.1"
               className="mt-2 font-anton text-5xl leading-[0.9] tracking-tight md:text-8xl"
             >
-              ESSENTIALS
+              БАЗОВЫЕ ВЕЩИ
             </h2>
           </div>
           <p data-reveal data-delay="0.2" className="hidden max-w-xs text-right text-sm text-void/60 md:block">

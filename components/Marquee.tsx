@@ -1,5 +1,5 @@
 export default function Marquee({
-  text = "OKTASHOP® — STREET CULTURE — NOT MADE TO FIT IN — INDEPENDENT STYLE —",
+  text = "OKTASHOP® — УЛИЧНАЯ КУЛЬТУРА — НЕ СОЗДАНО ЧТОБЫ ВПИСАТЬСЯ — НЕЗАВИСИМЫЙ СТИЛЬ —",
   className = "",
 }: {
   text?: string;

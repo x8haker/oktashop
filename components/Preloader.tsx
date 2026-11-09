@@ -125,7 +125,7 @@ export default function Preloader() {
         transition={{ delay: 0.5 }}
         className="mt-4 font-mono text-[10px] uppercase tracking-[0.4em] text-concrete"
       >
-        Independent street culture
+        Independent street culture — независимая уличная культура
       </motion.p>
     </motion.div>
   );

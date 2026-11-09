@@ -31,13 +31,14 @@ const pimg = (slug: string, n: number, ext = "jpg") =>
   asset(`/products/${slug}/${String(n).padStart(2, "0")}.${ext}`);
 
 export const categories: { name: Category; label: string; image: string }[] = [
-  { name: "HOODIES", label: "HOODIES", image: pimg("new-york-199x-hoodie", 1) },
-  { name: "SWEATSHIRTS", label: "SWEATSHIRTS", image: pimg("preppy-tie-sweatshirt", 1) },
-  { name: "SETS", label: "SETS", image: pimg("spider-set", 1) },
-  { name: "BAGGY JEANS", label: "BAGGY JEANS", image: pimg("baggy-jeans-grey", 1) },
-  { name: "JACKETS", label: "JACKETS", image: pimg("spider-bomber-jacket", 1) },
-  { name: "SHOES", label: "SHOES", image: pimg("sneakers-black-teal", 1) },
-  { name: "ACCESSORIES", label: "ACCESSORIES", image: pimg("spider-beanie", 1) },
+  // name — ключ для URL (?category=HOODIES), label — что видит покупатель.
+  { name: "HOODIES", label: "ХУДИ", image: pimg("new-york-199x-hoodie", 1) },
+  { name: "SWEATSHIRTS", label: "СВИТШОТЫ", image: pimg("preppy-tie-sweatshirt", 1) },
+  { name: "SETS", label: "КОМПЛЕКТЫ", image: pimg("spider-set", 1) },
+  { name: "BAGGY JEANS", label: "ДЖИНСЫ", image: pimg("baggy-jeans-grey", 1) },
+  { name: "JACKETS", label: "КУРТКИ", image: pimg("spider-bomber-jacket", 1) },
+  { name: "SHOES", label: "ОБУВЬ", image: pimg("sneakers-black-teal", 1) },
+  { name: "ACCESSORIES", label: "АКСЕССУАРЫ", image: pimg("spider-beanie", 1) },
 ];
 
 export const products: Product[] = [
@@ -217,6 +218,10 @@ export const products: Product[] = [
 ];
 
 export const getBySlug = (slug: string) => products.find((p) => p.slug === slug);
+
+/** Русское название категории для показа покупателю (ключ URL — английский). */
+export const catLabel = (c: Category | "ALL") =>
+  categories.find((x) => x.name === c)?.label ?? (c === "ALL" ? "ВСЕ" : c);
 
 export const getRelated = (p: Product, n = 4) =>
   products.filter((x) => x.id !== p.id && x.category === p.category).slice(0, n);

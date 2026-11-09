@@ -11,12 +11,12 @@ export default function CartPage() {
   const { items, subtotal, count, setQty, remove, clear, hydrated } = useCart();
 
   // До гидратации корзина неизвестна: без этого флага страница мигает
-  // «IT'S EMPTY.» у покупателя, у которого товары есть в localStorage.
+  // «ПУСТО.» у покупателя, у которого товары есть в localStorage.
   if (!hydrated) {
     return (
       <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
         <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-          YOUR BAG
+          ВАША СУМКА
         </p>
         <div className="mt-4 h-[15vw] w-full max-w-[900px] animate-pulse bg-asphalt md:h-[9vw]" />
       </div>
@@ -26,18 +26,18 @@ export default function CartPage() {
   return (
     <div className="mx-auto max-w-[1600px] px-5 pb-24 pt-32 md:px-8 md:pt-44">
       <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-        YOUR BAG / {count} ITEM{count === 1 ? "" : "S"}
+        ВАША СУМКА / {count} ТОВАР{count === 1 ? "" : count < 5 ? "А" : "ОВ"}
       </p>
       <h1
         data-reveal="mask"
         className="mt-4 font-anton text-[15vw] leading-[0.85] tracking-tight md:text-[9vw]"
       >
-        CART
+        КОРЗИНА
       </h1>
 
       {items.length === 0 ? (
         <div className="mt-12 border border-dashed border-dirty/20 py-24 text-center">
-          <p className="font-anton text-4xl text-dirty/70 md:text-6xl">IT&apos;S EMPTY.</p>
+          <p className="font-anton text-4xl text-dirty/70 md:text-6xl">ПУСТО.</p>
           <p className="mt-3 text-sm text-concrete">
             В корзине пока ничего нет — загляни в дроп.
           </p>
@@ -45,7 +45,7 @@ export default function CartPage() {
             href="/shop"
             className="mt-8 inline-flex items-center gap-3 bg-lime px-8 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-void transition-colors hover:bg-dirty"
           >
-            SHOP THE DROP <ArrowRight size={15} />
+            СМОТРЕТЬ ДРОП <ArrowRight size={15} />
           </Link>
         </div>
       ) : (
@@ -72,7 +72,7 @@ export default function CartPage() {
                         {i.name}
                       </Link>
                       <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.25em] text-concrete">
-                        SIZE: {i.size}
+                        РАЗМЕР: {i.size}
                       </p>
                     </div>
                     <p className="font-mono text-sm tabular-nums">
@@ -106,7 +106,7 @@ export default function CartPage() {
                       aria-label={`Удалить ${i.name}`}
                       className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-concrete transition-colors hover:text-blood"
                     >
-                      <Trash2 size={13} /> REMOVE
+                      <Trash2 size={13} /> УДАЛИТЬ
                     </button>
                   </div>
                 </div>
@@ -116,26 +116,26 @@ export default function CartPage() {
 
           {/* итог */}
           <aside className="h-fit border border-dirty/10 bg-asphalt p-6 lg:sticky lg:top-28">
-            <h2 className="font-anton text-3xl tracking-tight">SUMMARY</h2>
+            <h2 className="font-anton text-3xl tracking-tight">ИТОГИ</h2>
 
             <dl className="mt-6 space-y-3 border-b border-dirty/10 pb-6 font-mono text-xs uppercase tracking-widest">
               <div className="flex justify-between">
-                <dt className="text-concrete">Items</dt>
+                <dt className="text-concrete">Товары</dt>
                 <dd className="tabular-nums">{count}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-concrete">Subtotal</dt>
+                <dt className="text-concrete">Сумма</dt>
                 <dd className="tabular-nums">{formatPrice(subtotal)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-concrete">Delivery</dt>
+                <dt className="text-concrete">Доставка</dt>
                 <dd className="text-lime">{storeConfig.delivery.dushanbe}</dd>
               </div>
             </dl>
 
             <div className="mt-6 flex items-end justify-between">
               <span className="font-mono text-xs uppercase tracking-widest text-concrete">
-                TOTAL
+                ВСЕГО
               </span>
               <span className="font-anton text-3xl text-lime tabular-nums">
                 {formatPrice(subtotal)}
@@ -146,7 +146,7 @@ export default function CartPage() {
               href="/checkout"
               className="mt-6 flex items-center justify-center gap-3 bg-lime py-4 font-mono text-[11px] uppercase tracking-[0.3em] text-void transition-colors hover:bg-dirty"
             >
-              CHECKOUT <ArrowRight size={15} />
+              ОФОРМИТЬ ЗАКАЗ <ArrowRight size={15} />
             </Link>
 
             <button

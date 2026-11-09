@@ -16,18 +16,18 @@ export default function NewArrivals() {
       <div className="mb-10 flex flex-col justify-between gap-4 md:mb-16 md:flex-row md:items-end">
         <div>
           <p data-reveal className="font-bebas text-lg tracking-[0.3em] text-lime">
-            01 / THE LATEST DROP
+            01 / ПОСЛЕДНИЙ ДРОП
           </p>
           <h2
             data-reveal
             data-delay="0.1"
             className="mt-2 font-anton text-5xl leading-[0.9] tracking-tight md:text-8xl"
           >
-            NEW ARRIVALS
+            НОВИНКИ
           </h2>
         </div>
         <p data-reveal data-delay="0.2" className="max-w-xs text-sm text-concrete md:text-right">
-          Fresh pieces. No compromises.
+          Свежие вещи. Без компромиссов.
         </p>
       </div>
 

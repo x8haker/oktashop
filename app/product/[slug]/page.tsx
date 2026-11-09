@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import ProductDetail from "@/components/ProductDetail";
-import { getBySlug, products } from "@/lib/products";
+import { getBySlug, catLabel, products } from "@/lib/products";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return { title: "Товар не найден" };
   return {
     title: product.name,
-    description: `${product.description} — ${product.category}, OKTASHOP®.`,
+    description: `${product.description} — ${catLabel(product.category)}, OKTASHOP®.`,
     openGraph: {
       title: `${product.name} — OKTASHOP®`,
       description: product.description,

@@ -3,7 +3,7 @@
 export const storeConfig = {
   name: "OKTASHOP®",
   slogan: "NOT MADE TO FIT IN.",
-  location: "Dushanbe, Tajikistan",
+  location: "Душанбе, Таджикистан",
 
   /** Адрес для отправки заказов в Telegram (username без @). Пустая строка = интеграция выключена. */
   telegram: {
@@ -22,7 +22,7 @@ export const storeConfig = {
     instagram: "https://instagram.com/oktash0p",
     /** Полный URL вида https://t.me/<username> — используется как href ссылки. */
     telegram: "",
-    address: "Dushanbe, Tajikistan",
+    address: "Душанбе, Таджикистан",
   },
 
   delivery: {

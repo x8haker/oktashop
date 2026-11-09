@@ -5,7 +5,7 @@ import { asset } from "@/lib/asset";
 export const metadata: Metadata = {
   title: "Магазин",
   description:
-    "Каталог OKTASHOP®: худи, свитшоты, комплекты, baggy jeans, куртки, кеды и аксессуары с реальными фото.",
+    "Каталог OKTASHOP®: худи, свитшоты, комплекты, багги-джинсы, куртки, кеды и аксессуары с реальными фото.",
   alternates: { canonical: asset("/shop/") },
 };
 

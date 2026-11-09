@@ -117,7 +117,7 @@ export default function RegisterForm() {
 
       <label className="block">
         <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.3em] text-concrete">
-          EMAIL *
+          ПОЧТА *
         </span>
         <input
           value={f.email}

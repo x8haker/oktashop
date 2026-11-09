@@ -25,6 +25,18 @@ const CATS: (Category | "ALL")[] = [
   "ACCESSORIES",
 ];
 
+/** Русские названия категорий для кнопок фильтра (значения URL — английские). */
+const CAT_LABELS: Record<string, string> = {
+  ALL: "ВСЕ",
+  HOODIES: "ХУДИ",
+  SWEATSHIRTS: "СВИТШОТЫ",
+  SETS: "КОМПЛЕКТЫ",
+  "BAGGY JEANS": "ДЖИНСЫ",
+  JACKETS: "КУРТКИ",
+  SHOES: "ОБУВЬ",
+  ACCESSORIES: "АКСЕССУАРЫ",
+};
+
 type Sort = "new" | "price-asc" | "price-desc" | "name";
 
 function Catalog() {
@@ -89,13 +101,13 @@ function Catalog() {
     <>
       <header className="mx-auto max-w-[1600px] px-5 pb-8 pt-32 md:px-8 md:pt-44">
         <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-lime">
-          OKTASHOP® / CATALOG
+          OKTASHOP® / КАТАЛОГ
         </p>
         <h1
           data-reveal="mask"
           className="mt-4 font-anton text-[15vw] leading-[0.85] tracking-tight md:text-[9vw]"
         >
-          THE SHOP
+          МАГАЗИН
         </h1>
         <p className="mt-4 max-w-md text-sm text-concrete">
           {products.length} позиций с реальными фото товаров. Наличие и размеры
@@ -104,7 +116,7 @@ function Catalog() {
       </header>
 
       <Marquee
-        text="DROP 001 — FALL / WINTER — WEAR YOUR ATTITUDE — NO RULES. NO UNIFORM. — STREET CULTURE NEVER DIES —"
+        text="ДРОП 001 — ОСЕНЬ / ЗИМА — НОСИ СВОЁ ОТНОШЕНИЕ — БЕЗ ПРАВИЛ. БЕЗ ФОРМЫ. — УЛИЧНАЯ КУЛЬТУРА НИКОГДА НЕ УМИРАЕТ —"
         className="mb-10"
       />
 
@@ -126,7 +138,7 @@ function Catalog() {
                       : "border-dirty/20 text-dirty hover:border-lime hover:text-lime"
                   }`}
                 >
-                  {c}
+                  {CAT_LABELS[c] ?? c}
                 </button>
               ))}
 
@@ -138,7 +150,7 @@ function Catalog() {
                     : "border-dirty/20 text-dirty hover:border-lime hover:text-lime"
                 }`}
               >
-                NEW ONLY
+                ТОЛЬКО НОВОЕ
               </button>
             </div>
 
@@ -165,10 +177,10 @@ function Catalog() {
                 aria-label="Фильтр по размеру"
                 className="border border-dirty/20 bg-void px-3 py-2 font-mono text-[11px] uppercase tracking-widest outline-none focus:border-lime"
               >
-                <option value="ALL">SIZE: ALL</option>
+                <option value="ALL">РАЗМЕР: ВСЕ</option>
                 {allSizes.map((s) => (
                   <option key={s} value={s}>
-                    SIZE: {s}
+                    РАЗМЕР: {s}
                   </option>
                 ))}
               </select>
@@ -179,23 +191,23 @@ function Catalog() {
                 aria-label="Сортировка"
                 className="border border-dirty/20 bg-void px-3 py-2 font-mono text-[11px] uppercase tracking-widest outline-none focus:border-lime"
               >
-                <option value="new">SORT: NEW</option>
-                <option value="price-asc">PRICE: LOW → HIGH</option>
-                <option value="price-desc">PRICE: HIGH → LOW</option>
-                <option value="name">NAME: A → Z</option>
+                <option value="new">СПЕРВА НОВЫЕ</option>
+                <option value="price-asc">ЦЕНА: ПО ВОЗРАСТ.</option>
+                <option value="price-desc">ЦЕНА: ПО УБЫВ.</option>
+                <option value="name">НАЗВАНИЕ: А → Я</option>
               </select>
 
               <button
                 onClick={reset}
                 className="font-mono text-[10px] uppercase tracking-[0.2em] text-concrete underline-offset-4 hover:text-lime hover:underline"
               >
-                RESET
+                СБРОС
               </button>
             </div>
           </div>
 
           <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.3em] text-concrete">
-            FOUND: {list.length} / TOTAL: {products.length}
+            НАЙДЕНО: {list.length} / ВСЕГО: {products.length}
           </p>
         </div>
 
@@ -211,7 +223,7 @@ function Catalog() {
           </div>
         ) : (
           <div className="border border-dashed border-dirty/20 py-24 text-center">
-            <p className="font-anton text-3xl text-dirty/70">NOTHING HERE YET.</p>
+            <p className="font-anton text-3xl text-dirty/70">ЗДЕСЬ ПОКА ПУСТО.</p>
             <p className="mt-2 text-sm text-concrete">
               Попробуйте изменить фильтры или сбросить их.
             </p>
