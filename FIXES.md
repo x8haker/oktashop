@@ -112,3 +112,23 @@
 - Заказы: сайт → Cloudflare Worker `oktashop-order` → Telegram владельца.
   Секреты (`TG_BOT_TOKEN`, `TG_CHAT_ID`) — только в Worker, в коде их нет.
   Инструкция по пересозданию — `worker/DEPLOY.md`.
+- Аккаунты покупателей: Firebase Auth (регистрация/вход/профиль, история
+  заказов в Firestore) + письмо подтверждения email. Конфиг Firebase —
+  в `lib/firebase.ts` (переопределяется `NEXT_PUBLIC_FIREBASE_*`).
+- Уведомление о новой регистрации: сайт шлёт `{type:"register"}` в тот же
+  Worker → сообщение «🆕 НОВАЯ РЕГИСТРАЦИЯ OKTASHOP®» (fire-and-forget).
+- Интерфейс полностью на русском; шрифты с кириллицей: Anton → Roboto
+  Condensed, Space Grotesk → Manrope, Bebas Neue → Oswald (имена
+  CSS-переменных и Tailwind-классов прежние — разметка не переписывалась).
+  Проверено на проде: `document.fonts.check` для всех трёх — true,
+  консоль без ошибок.
+
+### Что ещё ждём от владельца
+
+3. **Cloudflare Worker**: вставить 2 правки из `worker/order-worker.js`
+   (ветка `type === "register"` + `buildRegisterMessage`) → Deploy.
+   Без них уведомления о регистрации не приходят.
+4. **Firestore**: опубликовать `firestore.rules` (Firestore → Rules →
+   Publish). Сейчас правила в тестовом режиме (доступ открыт на 30 дней).
+5. **Тестовые аккаунты** `oktashop.test+1/+2@gmail.com` — удалить из
+   Firebase Auth перед запуском.
