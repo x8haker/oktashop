@@ -34,8 +34,30 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Кэш .next/cache: next/font хранит скачанные Google-шрифты. Без кэша
+      # каждый билд ходит в сеть, и при сбое Google CI падал с
+      # «TypeError: Cannot read properties of null» в next/font.
+      - name: Cache Next.js build (fonts, webpack)
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+
+      # Три попытки: даже с кэшем первый запуск может споткнуться о сеть —
+      # деплой не должен висеть из-за одного сбитого запроса.
       - name: Build (static export)
-        run: npm run build
+        run: |
+          for attempt in 1 2 3; do
+            if npm run build; then
+              exit 0
+            fi
+            echo "Build attempt $attempt failed — retrying in 10s..."
+            sleep 10
+          done
+          echo "Build failed after 3 attempts"
+          exit 1
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

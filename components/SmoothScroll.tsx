@@ -30,7 +30,14 @@ export default function SmoothScroll() {
       if (!a) return;
       const id = a.getAttribute("href");
       if (!id || id.length < 2) return;
-      const el = document.querySelector(id);
+      // Невалидный селектор (#1abc и т.п.) бросает SyntaxError — не даём
+      // исключению из обработчика клика упасть в консоль.
+      let el: Element | null = null;
+      try {
+        el = document.querySelector(id);
+      } catch {
+        return;
+      }
       if (!el) return;
       e.preventDefault();
       lenis.scrollTo(el as HTMLElement, { offset: -80 });

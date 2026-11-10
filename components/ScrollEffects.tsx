@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,6 +16,17 @@ if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
 // бесконечно пересчитывать позиции из-за этого.
 ScrollTrigger.config({ ignoreMobileResize: true });
 
+/** Layout-эффект вместо обычного useEffect: его cleanup выполняется в фазе
+ *  мутаций React — ДО удаления уходящей страницы из DOM.
+ *
+ *  Почему это критично: ScrollTrigger с pin:true оборачивает секцию в
+ *  pin-spacer, меняя ей родителя. Раньше cleanup (useEffect) выполнялся после
+ *  удаления узлов, и ctx.revert() падал с NotFoundError «removeChild» — React
+ *  ловил это и показывал «Application error: a client-side exception».
+ *
+ *  typeof window — защита SSR: на сервере useLayoutEffect предупреждает. */
+const useBrowserLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 /**
  * Глобальные scroll-эффекты (переподключаются при каждой смене страницы):
  *  - [data-reveal]        — появление блока при прокрутке (опц. data-reveal="mask|chars")
@@ -29,7 +40,7 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 export default function ScrollEffects() {
   const pathname = usePathname();
 
-  useEffect(() => {
+  useBrowserLayoutEffect(() => {
     // reduced-motion: показываем весь контент без анимаций.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       document
@@ -184,8 +195,20 @@ export default function ScrollEffects() {
     return () => {
       window.clearTimeout(timer);
       cleanupListeners?.();
-      ctx?.revert();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      // Cleanup падает, если React уже удалил узлы (быстрый переход между
+      // страницами): падение внутри cleanup ломало бы весь экран вплоть до
+      // «Application error». Проглатываем — новый набор триггеров и так
+      // пересоздаётся на следующем effect-run.
+      try {
+        ctx?.revert();
+      } catch {
+        /* узлы уже удалены из DOM */
+      }
+      try {
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+      } catch {
+        /* триггер уже уничтожен */
+      }
     };
   }, [pathname]);
 

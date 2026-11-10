@@ -11,6 +11,23 @@ export default function Preloader() {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
+    // Сброс предохранителя автоперезагрузки (lib/client-recovery): приложение
+    // дожило до монтирования — значит, можно снова разрешить самовосстановление
+    // после следующего падения. Задержка нужна, чтобы гидрационная ошибка
+    // успела «съесть» предохранитель, а не зациклила перезагрузки.
+    let guard: number | undefined;
+    try {
+      guard = window.setTimeout(() => {
+        try {
+          sessionStorage.removeItem("oktashop_auto_reload");
+        } catch {
+          /* приватный режим */
+        }
+      }, 8000);
+    } catch {
+      /* нет window — SSR */
+    }
+
     // Показываем прелоадер один раз за сессию: без sessionStorage
     // каждый повторный заход ждал 2.3 с.
     let seen = false;
@@ -22,13 +39,16 @@ export default function Preloader() {
     }
     if (seen) {
       setHidden(true);
-      return;
+      return () => {
+        if (guard) window.clearTimeout(guard);
+      };
     }
     const t1 = setTimeout(() => setDone(true), 1500);
     const t2 = setTimeout(() => setHidden(true), 2300);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      if (guard) window.clearTimeout(guard);
     };
   }, []);
 
