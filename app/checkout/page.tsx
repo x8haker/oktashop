@@ -1,13 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Copy, Send } from "lucide-react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 import { useCart } from "@/lib/cart";
-import { useAuth } from "@/lib/auth";
-import { db } from "@/lib/firebase";
 import { formatPrice } from "@/lib/products";
 import { storeConfig } from "@/lib/config";
 
@@ -20,7 +17,6 @@ interface Form {
 
 export default function CheckoutPage() {
   const { items, subtotal, clear, hydrated } = useCart();
-  const { user, profile } = useAuth();
   const [f, setF] = useState<Form>({ name: "", phone: "", city: "Душанбе", details: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
   const [status, setStatus] = useState<
@@ -48,15 +44,6 @@ export default function CheckoutPage() {
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
   };
 
-  // Автозаполнение из профиля: введённое вручную не затираем.
-  useEffect(() => {
-    if (!profile) return;
-    setF((prev) => ({
-      ...prev,
-      name: prev.name || profile.name || "",
-      phone: prev.phone || profile.phone || "",
-    }));
-  }, [profile]);
   const buildOrder = () => {
     const lines = items.map(
       (i, n) =>
@@ -110,26 +97,6 @@ export default function CheckoutPage() {
           }),
         });
         if (res.ok) {
-          // Заказ попадает в историю профиля (если покупатель вошёл).
-          // Ошибка записи не должна ломать основной сценарий — заказ уже в Telegram.
-          if (db && user) {
-            try {
-              await addDoc(collection(db, "orders"), {
-                uid: user.uid,
-                email: user.email ?? "",
-                name: f.name,
-                phone: f.phone,
-                city: f.city,
-                details: f.details,
-                items,
-                subtotal,
-                status: "new",
-                createdAt: serverTimestamp(),
-              });
-            } catch {
-              /* история не сохранилась — заказ уже отправлен */
-            }
-          }
           clear();
           setStatus("sent");
           return;
