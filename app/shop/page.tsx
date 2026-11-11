@@ -24,6 +24,7 @@ const CATS: (Category | "ALL")[] = [
   "SHOES",
   "ACCESSORIES",
   "ASTRE",
+  "OTAKUWEAR",
 ];
 
 /** Русские названия категорий для кнопок фильтра (значения URL — английские). */
@@ -37,6 +38,7 @@ const CAT_LABELS: Record<string, string> = {
   SHOES: "ОБУВЬ",
   ACCESSORIES: "АКСЕССУАРЫ",
   ASTRE: "ASTRÉ",
+  OTAKUWEAR: "OTAKUWEAR",
 };
 
 type Sort = "new" | "price-asc" | "price-desc" | "name";

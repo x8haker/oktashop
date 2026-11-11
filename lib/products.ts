@@ -13,7 +13,8 @@ export type Category =
   | "JACKETS"
   | "SHOES"
   | "ACCESSORIES"
-  | "ASTRE";
+  | "ASTRE"
+  | "OTAKUWEAR";
 
 export interface Product {
   id: string;
@@ -42,6 +43,8 @@ export const categories: { name: Category; label: string; image: string }[] = [
   { name: "ACCESSORIES", label: "АКСЕССУАРЫ", image: pimg("spider-beanie", 1) },
   // Отдельный раздел — товары партнёрского магазина ASTRÉ STORE (alt mode shop).
   { name: "ASTRE", label: "ASTRÉ", image: pimg("astre-plaid-hoodie", 1) },
+  // Отдельный раздел — товары партнёрского магазина OtakuWear (аниме-стритвир).
+  { name: "OTAKUWEAR", label: "OTAKUWEAR", image: pimg("ow-anime-jacket-navy", 1) },
 ];
 
 export const products: Product[] = [
@@ -403,6 +406,272 @@ export const products: Product[] = [
     sku: "AST-AC-004",
     description:
       "Бейдж-холдер с координатным шнуром и подвесками: прозрачное окно для карты, карабин, брелок-сердечко. Мелкий, но заметный аксессуар.",
+  },
+
+  // ============ OTAKUWEAR — отдельный раздел (аниме-стритвир) ============
+  // Фото — промо-карточки магазина OtakuWear (PNG → JPEG q82, 63 МБ → 7 МБ).
+  // Цен на карточках нет — выставлены по рынку Душанба +10–15%, как в
+  // основном каталоге (см. комментарий у поля price).
+  {
+    id: "p28",
+    slug: "ow-anime-jacket-navy",
+    name: "АНИМЕ-КУРТКА NAVY",
+    category: "OTAKUWEAR",
+    price: 690,
+    sizes: ["S", "M", "L", "XL"],
+    images: [1, 2].map((n) => pimg("ow-anime-jacket-navy", n)),
+    isNew: true,
+    sku: "OW-JK-001",
+    description:
+      "Тёмно-синяя куртка в азиатском стиле с белыми полосами на рукавах и застёжкой-молнией по центру. Свободный силуэт из лёгкой ткани — база для многослойных образов.",
+  },
+  {
+    id: "p29",
+    slug: "ow-oversize-hoodie-grey",
+    name: "ХУДИ OVERSIZE GREY",
+    category: "OTAKUWEAR",
+    price: 550,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-oversize-hoodie-grey", 1)],
+    isNew: true,
+    sku: "OW-HD-001",
+    description:
+      "Серое оверсайз-худи из мягкого футера: объёмный капюшон, широкие рукава и глубокий карман-кенгуру. Спокойная база без принтов.",
+  },
+  {
+    id: "p30",
+    slug: "ow-anime-jacket-black",
+    name: "АНИМЕ-КУРТКА BLACK",
+    category: "OTAKUWEAR",
+    price: 690,
+    sizes: ["S", "M", "L", "XL"],
+    images: [1, 2].map((n) => pimg("ow-anime-jacket-black", n)),
+    isNew: true,
+    sku: "OW-JK-002",
+    description:
+      "Чёрная куртка с белыми полосами на рукавах и молнией по центру — тот же крой, что и у синей версии, только в монохроме. Лёгкая ткань, свободная посадка.",
+  },
+  {
+    id: "p31",
+    slug: "ow-anime-tee-black",
+    name: "АНИМЕ-ФУТБОЛКА BLACK",
+    category: "OTAKUWEAR",
+    price: 350,
+    sizes: ["S", "M", "L", "XL"],
+    images: [1, 2].map((n) => pimg("ow-anime-tee-black", n)),
+    isNew: true,
+    sku: "OW-TP-001",
+    description:
+      "Чёрная футболка с крупной белой манговой графикой на груди. Плотный хлопок и свободный крой — посадка не садится после стирки.",
+  },
+  {
+    id: "p32",
+    slug: "ow-anime-pants-brown",
+    name: "БРЮКИ ANIME BROWN",
+    category: "OTAKUWEAR",
+    price: 550,
+    sizes: ["30", "32", "34", "36"],
+    images: [1, 2].map((n) => pimg("ow-anime-pants-brown", n)),
+    isNew: true,
+    sku: "OW-PT-001",
+    description:
+      "Коричневые брюки свободного кроя со светлой строчкой по боковым швам. Плотная ткань, средняя посадка, широкие штанины.",
+  },
+  {
+    id: "p33",
+    slug: "ow-canvas-sneakers-brown",
+    name: "КЕДЫ CANVAS BROWN",
+    category: "OTAKUWEAR",
+    price: 590,
+    sizes: ["39", "40", "41", "42", "43"],
+    images: [pimg("ow-canvas-sneakers-brown", 1)],
+    isNew: true,
+    sku: "OW-SH-001",
+    description:
+      "Коричневые канвасовые кеды с белой резиновой подошвой: классический силуэт, плотный текстиль, лёгкая посадка на ногу.",
+  },
+  {
+    id: "p34",
+    slug: "ow-mesh-flow-cream",
+    name: "КРОССОВКИ MESH FLOW CREAM",
+    category: "OTAKUWEAR",
+    price: 690,
+    sizes: ["39", "40", "41", "42", "43"],
+    images: [pimg("ow-mesh-flow-cream", 1)],
+    isNew: true,
+    sku: "OW-SH-002",
+    description:
+      "Кремовые кроссовки с сетчатым верхом и рельефной подошвой: дышащая конструкция и амортизация на каждый день.",
+  },
+  {
+    id: "p35",
+    slug: "ow-knowledge-tee",
+    name: "ФУТБОЛКА «ПОЗНАНИЕ»",
+    category: "OTAKUWEAR",
+    price: 350,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-knowledge-tee", 1)],
+    isNew: true,
+    sku: "OW-TP-002",
+    description:
+      "Чёрная футболка с мелкой белой печатью-текстом на груди — лаконичный минималистичный принт в духе страниц буддийских сутр.",
+  },
+  {
+    id: "p36",
+    slug: "ow-navy-stripe-polo",
+    name: "ПОЛО NAVY STRIPE",
+    category: "OTAKUWEAR",
+    price: 420,
+    sizes: ["S", "M", "L", "XL"],
+    images: [1, 2].map((n) => pimg("ow-navy-stripe-polo", n)),
+    isNew: true,
+    sku: "OW-PO-001",
+    description:
+      "Тёмно-синее поло в тонкую белую полосу с контрастным белым воротником. Рубашковый крой из лёгкого хлопка.",
+  },
+  {
+    id: "p37",
+    slug: "ow-beige-loafers",
+    name: "ЛОФЕРЫ BEIGE",
+    category: "OTAKUWEAR",
+    price: 650,
+    sizes: ["39", "40", "41", "42", "43"],
+    images: [pimg("ow-beige-loafers", 1)],
+    isNew: true,
+    sku: "OW-SH-003",
+    description:
+      "Бежевые лоферы из матовой замши: мягкая стелька, устойчивая подошва, лаконичный силуэт без шнурков.",
+  },
+  {
+    id: "p38",
+    slug: "ow-mesh-flow-black",
+    name: "КРОССОВКИ MESH FLOW BLACK",
+    category: "OTAKUWEAR",
+    price: 690,
+    sizes: ["39", "40", "41", "42", "43"],
+    images: [pimg("ow-mesh-flow-black", 1)],
+    isNew: true,
+    sku: "OW-SH-004",
+    description:
+      "Чёрные кроссовки Mesh Flow с бирюзовыми акцентами: сетчатый верх, разделённая рельефная подошва, дышащая конструкция.",
+  },
+  {
+    id: "p39",
+    slug: "ow-azamzoda-sneakers",
+    name: "КРОССОВКИ AZAMZODA OTAKU DRIP",
+    category: "OTAKUWEAR",
+    price: 790,
+    sizes: ["39", "40", "41", "42", "43"],
+    // Одна модель, две расцветки: 01 — сине-красная, 02 — чёрно-бежевая.
+    images: [1, 2].map((n) => pimg("ow-azamzoda-sneakers", n)),
+    isNew: true,
+    sku: "OW-SH-005",
+    description:
+      "Кроссовки с плотной этнической вышивкой на носке и боковинах, разделённая подошва с рисунком. Модель в двух расцветках — сине-красной и чёрно-бежевой (фото 1 и 2).",
+  },
+  {
+    id: "p40",
+    slug: "ow-sport-pants-grey",
+    name: "СПОРТИВНЫЕ ШТАНЫ GREY",
+    category: "OTAKUWEAR",
+    price: 490,
+    sizes: ["S", "M", "L", "XL"],
+    images: [1, 2].map((n) => pimg("ow-sport-pants-grey", n)),
+    isNew: true,
+    sku: "OW-PT-002",
+    description:
+      "Серые спортивные штаны из футера с широким поясом на кулиске и прямыми штанинами. Мягкий начёс, свободная посадка.",
+  },
+  {
+    id: "p41",
+    slug: "ow-gojo-hoodie",
+    name: "ХУДИ GOJO SATORU",
+    category: "OTAKUWEAR",
+    price: 590,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-gojo-hoodie", 1)],
+    isNew: true,
+    sku: "OW-HD-002",
+    description:
+      "Белое худи с чёрной манговой графикой Gojo Satoru поперёк груди. Оверсайз-крой из плотного футера.",
+  },
+  {
+    id: "p42",
+    slug: "ow-anime-hoodie-black",
+    name: "ХУДИ OVERSIZE BLACK",
+    category: "OTAKUWEAR",
+    price: 550,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-anime-hoodie-black", 1)],
+    isNew: true,
+    sku: "OW-HD-003",
+    description:
+      "Чёрное оверсайз-худи из мягкого футера: объёмный капюшон, широкие рукава и глубокий карман. Чистая база без принтов.",
+  },
+  {
+    id: "p43",
+    slug: "ow-bomber-orange",
+    name: "БОМБЕР ORANGE",
+    category: "OTAKUWEAR",
+    price: 850,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-bomber-orange", 1)],
+    isNew: true,
+    sku: "OW-JK-003",
+    description:
+      "Чёрный бомбер с контрастной оранжевой подкладкой и молнией по центру: классический авиационный крой из плотной ткани.",
+  },
+  {
+    id: "p44",
+    slug: "ow-polo-trouser-set-beige",
+    name: "КОМПЛЕКТ ПОЛО И БРЮКИ BEIGE",
+    category: "OTAKUWEAR",
+    price: 890,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-polo-trouser-set-beige", 1)],
+    isNew: true,
+    sku: "OW-ST-001",
+    description:
+      "Комплект из бежевого поло с воротником и прямых брюк того же тона. Две вещи одного оттенка — образ собран без подбора.",
+  },
+  {
+    id: "p45",
+    slug: "ow-polo-trouser-set-black",
+    name: "КОМПЛЕКТ ПОЛО И БРЮКИ BLACK",
+    category: "OTAKUWEAR",
+    price: 890,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-polo-trouser-set-black", 1)],
+    isNew: true,
+    sku: "OW-ST-002",
+    description:
+      "Комплект: чёрное поло с белым воротником и чёрные прямые брюки. Монохромная пара на каждый день и на выход.",
+  },
+  {
+    id: "p46",
+    slug: "ow-sport-tee-burgundy",
+    name: "ФУТБОЛКА SPORT BURGUNDY",
+    category: "OTAKUWEAR",
+    price: 350,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-sport-tee-burgundy", 1)],
+    isNew: true,
+    sku: "OW-TP-003",
+    description:
+      "Бордовая спортивная футболка с чёрными боковыми вставками и мелкой надписью на груди. Лёгкий материал, свободный крой.",
+  },
+  {
+    id: "p47",
+    slug: "ow-naruto-tee",
+    name: "ФУТБОЛКА NARUTO",
+    category: "OTAKUWEAR",
+    price: 390,
+    sizes: ["S", "M", "L", "XL"],
+    images: [pimg("ow-naruto-tee", 1)],
+    isNew: true,
+    sku: "OW-TP-004",
+    description:
+      "Белая футболка с чёрно-белой манговой графикой Naruto по всей передней панели. Свободный крой, плотный хлопок.",
   },
 ];
 
