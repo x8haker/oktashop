@@ -7,7 +7,7 @@ import { asset } from "@/lib/asset";
 
 export const metadata: Metadata = {
   title: "Контакты",
-  description: "Связаться с OKTASHOP®: почта, адрес. Душанбе.",
+  description: "Связаться с OKTASHOP®: телефон, Instagram, адрес. Душанбе.",
   alternates: { canonical: asset("/contact/") },
 };
 
@@ -27,7 +27,7 @@ export default function ContactPage() {
       value: (c.instagram as string).replace(/^https?:\/\/(www\.)?instagram\.com\//, "@"),
       href: c.instagram,
     },
-    { icon: Mail, label: "ПОЧТА", value: c.email, href: `mailto:${c.email}` },
+    (c.email as string) && { icon: Mail, label: "ПОЧТА", value: c.email, href: `mailto:${c.email}` },
     { icon: MapPin, label: "АДРЕС", value: c.address, href: undefined },
     ...(c.phone
       ? [{ icon: Phone, label: "ТЕЛЕФОН", value: c.phone, href: `tel:${c.phone}` }]
@@ -91,7 +91,7 @@ export default function ContactPage() {
           <p className="mt-3 text-sm leading-relaxed text-dirty/70">
             {c.telegram
               ? "Быстрее всего отвечаем в Telegram: напишите, какой товар и размер вас интересует — подтвердим наличие и доставку."
-              : "Напишите нам, какой товар и размер вас интересует — подтвердим наличие и доставку."}
+              : "Позвоните или напишите в Instagram: какой товар и размер вас интересует — подтвердим наличие и доставку."}
           </p>
 
           <div className="mt-6 flex flex-col gap-3">
@@ -106,10 +106,10 @@ export default function ContactPage() {
               </a>
             ) : (
               <a
-                href={`mailto:${c.email}?subject=${encodeURIComponent("Вопрос по товару OKTASHOP")}`}
+                href={`tel:${(c.phone as string).replace(/\s/g, "")}`}
                 className="flex items-center justify-center gap-3 bg-lime py-4 font-mono text-[11px] uppercase tracking-[0.3em] text-void transition-colors hover:bg-dirty"
               >
-                <Mail size={15} /> НАПИСАТЬ НА ПОЧТУ
+                <Phone size={15} /> ПОЗВОНИТЬ
               </a>
             )}
             {c.instagram && (
@@ -122,12 +122,6 @@ export default function ContactPage() {
                 <Instagram size={15} /> INSTAGRAM
               </a>
             )}
-            <a
-              href={`mailto:${c.email}`}
-              className="flex items-center justify-center gap-3 border border-dirty/25 py-4 font-mono text-[11px] uppercase tracking-[0.3em] transition-colors hover:border-lime hover:text-lime"
-            >
-              <Mail size={15} /> {c.email}
-            </a>
           </div>
 
           <p className="mt-6 border-l-2 border-lime pl-3 font-mono text-[10px] uppercase leading-relaxed tracking-widest text-concrete">

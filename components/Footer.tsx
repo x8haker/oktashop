@@ -48,8 +48,8 @@ export default function Footer() {
             ) : (
               <ul className="mt-4 space-y-2 text-sm text-dirty/70">
                 <li>
-                  <a href={`mailto:${s.contacts.email}`} className="hover:text-lime">
-                    Написать на почту ↗
+                  <a href={`tel:${(s.contacts.phone as string).replace(/\s/g, "")}`} className="hover:text-lime">
+                    Позвонить ↗
                   </a>
                 </li>
               </ul>
@@ -59,7 +59,7 @@ export default function Footer() {
           <div>
             <h3 className="font-mono text-[10px] uppercase tracking-[0.3em] text-lime">КОНТАКТЫ</h3>
             <ul className="mt-4 space-y-2 text-sm text-dirty/70">
-              <li>{s.contacts.email}</li>
+              {(s.contacts.email as string) && <li>{s.contacts.email}</li>}
               {s.contacts.phone && <li>{s.contacts.phone}</li>}
               <li>{s.contacts.address}</li>
               <li className="text-xs text-concrete">{s.delivery.note}</li>

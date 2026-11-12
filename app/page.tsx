@@ -77,34 +77,22 @@ export default function HomePage() {
             </span>
           </h2>
 
-          <div className="mt-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div data-reveal data-delay="0.3" className="flex flex-wrap gap-3">
-              <MagneticButton
-                as="a"
-                href="/shop"
-                className="bg-lime px-7 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-void hover:bg-dirty"
-              >
-                СМОТРЕТЬ КОЛЛЕКЦИЮ
-                <ArrowRight size={15} />
-              </MagneticButton>
-              <MagneticButton
-                as="a"
-                href="#new-drop"
-                className="border border-dirty/30 px-7 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-dirty hover:border-lime hover:text-lime"
-              >
-                УВИДЕТЬ ДРОП
-              </MagneticButton>
-            </div>
-
-            <div
-              data-reveal
-              data-delay="0.4"
-              className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-concrete"
+          <div data-reveal data-delay="0.3" className="mt-8 flex flex-wrap gap-3">
+            <MagneticButton
+              as="a"
+              href="/shop"
+              className="bg-lime px-7 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-void hover:bg-dirty"
             >
-              <span className="h-px w-10 bg-concrete" />
-              ВНИЗ
-              <span className="inline-block h-8 w-px animate-pulse bg-lime" />
-            </div>
+              СМОТРЕТЬ КОЛЛЕКЦИЮ
+              <ArrowRight size={15} />
+            </MagneticButton>
+            <MagneticButton
+              as="a"
+              href="#new-drop"
+              className="border border-dirty/30 px-7 py-4 font-mono text-[11px] uppercase tracking-[0.25em] text-dirty hover:border-lime hover:text-lime"
+            >
+              УВИДЕТЬ ДРОП
+            </MagneticButton>
           </div>
         </div>
       </section>
@@ -216,11 +204,8 @@ export default function HomePage() {
 
       {/* ============ 07 LOOKBOOK — горизонтальная галерея ============ */}
       <section data-horizontal className="relative overflow-hidden bg-void">
-        <div className="flex items-baseline justify-between px-5 pt-14 md:px-8">
+        <div className="px-5 pt-14 md:px-8">
           <p className="font-bebas text-lg tracking-[0.3em] text-lime">02 / УЛИЧНЫЙ ВЫБОР</p>
-          <p className="hidden font-mono text-[10px] uppercase tracking-[0.3em] text-concrete md:block">
-            Листай →
-          </p>
         </div>
 
         <div data-horizontal-track className="flex gap-5 px-5 py-10 md:gap-8 md:px-8">

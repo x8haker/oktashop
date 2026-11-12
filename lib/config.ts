@@ -16,7 +16,8 @@ export const storeConfig = {
 
   contacts: {
     phone: "+992 87 211 8008",
-    email: "hello@oktashop.tj",
+    /** Пустая строка = почта не указана, блок не рендерится (нет мёртвых контактов). */
+    email: "",
     /** Пустая строка = соцсеть не настроена, ссылка не рендерится (нет мёртвых ссылок).
      *  Формат — полный URL: https://instagram.com/<user> */
     instagram: "https://instagram.com/oktash0p",
